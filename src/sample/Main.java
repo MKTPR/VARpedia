@@ -7,6 +7,8 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+import java.io.File;
+
 
 public class Main extends Application {
 
@@ -25,7 +27,10 @@ public class Main extends Application {
         // Load GUI
         Parent root = FXMLLoader.load(getClass().getResource("../scene/MainWindow.fxml"));
         primaryStage.setTitle(applicationName);
-        primaryStage.getIcons().add(new Image("file:resources/logo.svg"));
+
+        //File logo = new File("../../resources/logo.svg");
+        //primaryStage.getIcons().add(new Image(logo.toURI().toURL().toString()));
+
         Scene mainScene = new Scene(root, applicationDimensions[0], applicationDimensions[1]);
 
         primaryStage.setScene(mainScene);
