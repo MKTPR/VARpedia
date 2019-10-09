@@ -10,7 +10,7 @@
 <AnchorPane prefHeight="476.0" prefWidth="748.0" stylesheets="@DarkTheme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ManageCreationController">
    <children>
       <TextField alignment="CENTER" editable="false" layoutX="14.0" layoutY="14.0" prefHeight="26.0" prefWidth="200.0" text="Creations" />
-      <ListView layoutX="14.0" layoutY="40.0" prefHeight="400.0" prefWidth="200.0" />
+      <ListView fx:id="_creationList" layoutX="14.0" layoutY="40.0" onMouseClicked="#handleCreationSelected" prefHeight="400.0" prefWidth="200.0" />
       <HBox layoutX="14.0" layoutY="440.0" prefHeight="26.0" prefWidth="200.0">
          <children>
             <Button fx:id="_deleteCreationButton" mnemonicParsing="false" onAction="#deleteCreationOnClick" prefHeight="26.0" prefWidth="100.0" text="Delete" />
@@ -21,6 +21,6 @@
       <Button fx:id="_pauseButton" layoutX="499.0" layoutY="440.0" mnemonicParsing="false" onAction="#pauseMediaOnClick" prefHeight="26.0" prefWidth="71.0" text="Pause" />
       <Button fx:id="_fastPlayButton" layoutX="601.0" layoutY="440.0" mnemonicParsing="false" onAction="#fastPlayMediaOnClick" prefHeight="26.0" prefWidth="91.0" text="Fast Play" />
       <Button fx:id="_slowPlayButton" layoutX="272.0" layoutY="440.0" mnemonicParsing="false" onAction="#slowPlayMediaOnClick" prefHeight="26.0" prefWidth="91.0" text="Slow Play" />
-      <MediaView fitHeight="200.0" fitWidth="200.0" layoutX="367.0" layoutY="114.0" />
+      <MediaView fx:id="_mediaView" fitHeight="200.0" fitWidth="200.0" layoutX="367.0" layoutY="114.0" />
    </children>
 </AnchorPane>
