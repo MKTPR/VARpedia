@@ -7,23 +7,22 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
-<VBox fx:controller="sample.MainMenuController" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@DarkTheme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@DarkTheme.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.MainMenuController">
    <children>
       <Separator orientation="VERTICAL" prefHeight="200.0" visible="false" />
-      <Button fx:id="_createCreationButton" onAction="#createCreationOnClick" alignment="CENTER" mnemonicParsing="false" prefHeight="140.0" prefWidth="250.0" text="Create New Creation" textAlignment="JUSTIFY">
+      <Button fx:id="_createCreationButton" alignment="CENTER" mnemonicParsing="false" onAction="#createCreationOnClick" prefHeight="140.0" prefWidth="250.0" text="Create New Creation" textAlignment="JUSTIFY">
          <tooltip>
             <Tooltip text="Create a new creation" />
          </tooltip>
       </Button>
       <Separator orientation="VERTICAL" prefHeight="100.0" prefWidth="4.0" visible="false" />
-      <Button fx:id="_manageCreationButton" onAction="#manageCreationOnClick" alignment="CENTER" mnemonicParsing="false" prefHeight="140.0" prefWidth="250.0" text="Manage Existing Creations" textAlignment="JUSTIFY">
+      <Button fx:id="_manageCreationButton" alignment="CENTER" mnemonicParsing="false" onAction="#manageCreationOnClick" prefHeight="140.0" prefWidth="250.0" text="Manage Existing Creations" textAlignment="JUSTIFY">
          <tooltip>
             <Tooltip text="Play, delete and favourite your existing creations" />
          </tooltip>
       </Button>
       <Separator orientation="VERTICAL" prefHeight="100.0" prefWidth="5.0" visible="false" />
-      <Button fx:id="_playGameButton" onAction="#playGameOnClick" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="140.0" prefWidth="250.0" text="Play Game" textAlignment="JUSTIFY">
+      <Button fx:id="_playGameButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#playGameOnClick" prefHeight="140.0" prefWidth="250.0" text="Play Game" textAlignment="JUSTIFY">
          <VBox.margin>
             <Insets />
          </VBox.margin>
@@ -34,7 +33,7 @@
       <Separator orientation="VERTICAL" prefHeight="150.0" visible="false" />
       <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
-            <Button fx:id="_helpButton" onAction="#helpOnClick" alignment="BOTTOM_LEFT" mnemonicParsing="false" text="?">
+            <Button fx:id="_helpButton" alignment="BOTTOM_LEFT" mnemonicParsing="false" onAction="#helpOnClick" text="?">
                <HBox.margin>
                   <Insets bottom="5.0" left="5.0" />
                </HBox.margin>
