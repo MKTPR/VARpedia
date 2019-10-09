@@ -4,10 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
-
-import java.io.File;
 
 
 public class Main extends Application {
@@ -25,7 +22,7 @@ public class Main extends Application {
         fs.createCreationsDirectory();
 
         // Load GUI
-        Parent root = FXMLLoader.load(getClass().getResource("../scene/MainWindow.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("../scene/MainMenu.fxml"));
         primaryStage.setTitle(applicationName);
 
         //File logo = new File("../../resources/logo.svg");
