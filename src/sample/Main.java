@@ -27,7 +27,7 @@ public class Main extends Application {
 
         //File logo = new File("../../resources/logo.svg");
         //primaryStage.getIcons().add(new Image(logo.toURI().toURL().toString()));
-
+        //hello
         Scene mainScene = new Scene(root, applicationDimensions[0], applicationDimensions[1]);
 
         primaryStage.setScene(mainScene);
