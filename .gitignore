@@ -1,3 +1,6 @@
 out/
 temp/
 creations/
+
+#Don't add user generated files to repository
+Files/
