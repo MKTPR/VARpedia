@@ -22,7 +22,19 @@ public class MainMenuController {
     @FXML private Button _manageCreationButton;
     @FXML private Button _playGameButton;
 
-    public void createCreationOnClick() { System.out.println("yo"); }
+    public void createCreationOnClick() throws IOException{
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(Main.class.getResource("../scene/CreateCreation.fxml"));
+        Parent layout = loader.load();
+
+        Scene scene = new Scene(layout);
+        Stage Stage = new Stage();
+        Stage.setScene(scene);
+        //We can exclude the code below for multi-purpose/concurrency
+        Stage.initModality(Modality.APPLICATION_MODAL);
+        Stage.showAndWait();
+
+    }
 
     @FXML public void manageCreationOnClick() throws IOException {
         FXMLLoader loader = new FXMLLoader();
