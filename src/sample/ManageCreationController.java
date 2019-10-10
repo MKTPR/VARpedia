@@ -25,10 +25,12 @@ public class ManageCreationController {
     @FXML private Button _playCreationButton;
     @FXML private Button _playButton;
     @FXML private Button _pauseButton;
+    @FXML private Button _restartButton;
     @FXML private Button _fastPlayButton;
     @FXML private Button _slowPlayButton;
     @FXML private ListView _creationList;
     private String _creationChosen=null;
+    private MediaPlayer player;
 
 
     private void refresh(){
@@ -49,18 +51,12 @@ public class ManageCreationController {
 
     @FXML public void deleteCreationOnClick(ActionEvent actionEvent) {
 
-        if (_creationChosen == null) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Invalid Selection");
-            alert.setContentText("No creation has been chosen");
-            alert.showAndWait();
-        } else {
+        if (validSelection()) {
             String cmd = "rm -rf ./Files/creations/" + _creationChosen + " ./Files/Keywords/" + _creationChosen;
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirmation");
-            alert.setHeaderText("You have chosen" + _creationChosen);
-            alert.setContentText("Are you sure you want to delete" + _creationChosen);
+            alert.setHeaderText("You have chosen " + _creationChosen);
+            alert.setContentText("Are you sure you want to delete " + _creationChosen);
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK) {
                 {
@@ -72,27 +68,24 @@ public class ManageCreationController {
                     Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
                     alert2.setTitle("Information Dialog");
                     alert2.setHeaderText("Success!");
-                    alert2.setContentText("You have deleted"+_creationChosen);
+                    alert2.setContentText("You have deleted " + _creationChosen);
                     alert2.showAndWait();
 
                     _creationChosen = null;
+                    refresh();
+
                 }
             }
         }
     }
 
     @FXML public void playCreationOnClick(ActionEvent actionEvent) {
-        if (_creationChosen==null){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Invalid Selection");
-            alert.setContentText("No creation has been chosen");
-            alert.showAndWait();
-        }
-        else {
+        refresh();
+
+        if (validSelection()){
             File file = new File("./Files/creations/" + _creationChosen);
             Media vid = new Media(file.toURI().toString());
-            MediaPlayer player = new MediaPlayer(vid);
+            player = new MediaPlayer(vid);
 
             player.setAutoPlay(true);
             _mediaView.setMediaPlayer(player);
@@ -102,16 +95,48 @@ public class ManageCreationController {
             });
         }
     }
+
     @FXML public void playMediaOnClick(ActionEvent actionEvent) {
+        if(validSelection()) {
+            player.play();
+        }
     }
     @FXML public void pauseMediaOnClick(ActionEvent actionEvent) {
+        if (validSelection()) {
+            player.pause();
+        }
     }
     @FXML public void fastPlayMediaOnClick(ActionEvent actionEvent) {
+        if (validSelection()) {
+            player.setRate(player.getCurrentRate() * 2);
+        }
     }
     @FXML public void slowPlayMediaOnClick(ActionEvent actionEvent) {
+        if (validSelection()) {
+            player.setRate(player.getCurrentRate() / 2);
+        }
+    }
+    @FXML public void restartMediaOnClick(ActionEvent actionEvent) {
+        if(validSelection()) {
+            player.setRate(1);
+            player.seek(player.getStartTime());
+            player.play();
+        }
     }
 
     @FXML public void handleCreationSelected(MouseEvent mouseEvent) {
         _creationChosen= (String) _creationList.getSelectionModel().getSelectedItem();
+    }
+
+    private boolean validSelection(){
+        if (_creationChosen==null){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Invalid Selection");
+            alert.setContentText("No creation has been chosen");
+            alert.showAndWait();
+            return false;
+        }
+        return true;
     }
 }
