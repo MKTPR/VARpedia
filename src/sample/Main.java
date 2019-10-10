@@ -20,6 +20,8 @@ public class Main extends Application {
         FileSystem fs = FileSystem.getFileSystem();
         fs.createTempDirectory();
         fs.createCreationsDirectory();
+        fs.createKeywordsDirectory();
+
 
         // Load GUI
         Parent root = FXMLLoader.load(getClass().getResource("../scene/MainMenu.fxml"));

@@ -16,11 +16,13 @@ public class FileSystem {
 	private String workingPath;
 	private String tempPath;
 	private String creationsPath;
+	private String keywordsPath;
 
 	private FileSystem() {
 		workingPath = Paths.get("").toAbsolutePath().toString();
-		tempPath = workingPath + "/temp";
-		creationsPath = workingPath + "/creations";
+		tempPath = workingPath + "/Files/temp";
+		creationsPath = workingPath + "/Files/creations";
+		keywordsPath= workingPath + "/Files/keywords";
 	}
 
 	public static FileSystem getFileSystem() {
@@ -41,6 +43,17 @@ public class FileSystem {
 		try {
 			if (Files.notExists(Paths.get(creationsPath))) {
 				Files.createDirectories(Paths.get(creationsPath));
+			}
+		} catch (IOException exception) {
+			LOGGER.log(Level.SEVERE, exception.toString(), exception);
+		}
+
+	}
+
+	public void createKeywordsDirectory() {
+		try {
+			if (Files.notExists(Paths.get(keywordsPath))) {
+				Files.createDirectories(Paths.get(keywordsPath));
 			}
 		} catch (IOException exception) {
 			LOGGER.log(Level.SEVERE, exception.toString(), exception);
