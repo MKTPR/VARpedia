@@ -49,6 +49,8 @@ public class ManageCreationController {
         return list;
     }
 
+
+
     @FXML public void deleteCreationOnClick(ActionEvent actionEvent) {
 
         if (validSelection()) {

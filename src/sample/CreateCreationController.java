@@ -1,12 +1,17 @@
 package sample;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javax.swing.*;
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -16,12 +21,15 @@ import java.util.concurrent.Executors;
 public class CreateCreationController {
 
     private ExecutorService team = Executors.newSingleThreadExecutor();
+    private File _directory;
     @FXML private Button _searchButton;
     @FXML private Button _previewButton;
     @FXML private Button _saveAudioButton;
     @FXML private TextField _searchTerm;
     @FXML private TextField _audioName;
     @FXML private TextArea _content;
+    @FXML private ListView _audioList;
+    private ObservableList<String> _items;
     private String selected;
     private Process process;
 
@@ -61,6 +69,23 @@ public class CreateCreationController {
             }
         });
     }
+
+    private void refreshAudio(){
+            _directory = new File("./Files/temp");
+            _items = FXCollections.observableArrayList(getArrayList(_directory));
+            _audioList.setItems(_items);
+
+    }
+    private ArrayList<String> getArrayList(final File directory) {
+        ArrayList<String> list = new ArrayList<String>();
+
+        for (final File creations : directory.listFiles()) {
+            list.add(creations.getName());
+        }
+        Collections.sort(list, String.CASE_INSENSITIVE_ORDER);
+        return list;
+    }
+
 
     @FXML
     private void preview(ActionEvent actionEvent) {
@@ -135,6 +160,7 @@ public class CreateCreationController {
                     e.printStackTrace();
                 }
             }
+            refreshAudio();
             selected = null;
         }
     }
