@@ -22,7 +22,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        FlikrFetchImagesTask task = new FlikrFetchImagesTask();
+        FlikrFetchImagesTask task = new FlikrFetchImagesTask("apple");
         team.submit(task);
         //Setup temporary and creations directory
         FileSystem fs = FileSystem.getFileSystem();
