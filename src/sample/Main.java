@@ -30,7 +30,7 @@ public class Main extends Application {
         fs.createKeywordsDirectory();
 
         // Load GUI
-        Parent root = FXMLLoader.load(getClass().getResource("../scene/MainMenu.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/scene/MainMenu.fxml"));
         primaryStage.setTitle(applicationName);
 
         //File logo = new File("../../resources/logo.svg");

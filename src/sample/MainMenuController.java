@@ -24,7 +24,7 @@ public class MainMenuController {
 
     public void createCreationOnClick() throws IOException{
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(Main.class.getResource("../scene/CreateCreation.fxml"));
+        loader.setLocation(Main.class.getResource("/scene/CreateCreation.fxml"));
         Parent layout = loader.load();
 
         Scene scene = new Scene(layout);
@@ -38,7 +38,7 @@ public class MainMenuController {
 
     @FXML public void manageCreationOnClick() throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(Main.class.getResource("../scene/ManageCreation.fxml"));
+        loader.setLocation(Main.class.getResource("/scene/ManageCreation.fxml"));
         Parent layout = loader.load();
 
         Scene scene = new Scene(layout);
