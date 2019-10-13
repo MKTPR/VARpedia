@@ -1,4 +1,4 @@
 Usage
 =====================
 
-Fetch a max of 99 photos per creation
+Fetch a max of 98 photos per creation
