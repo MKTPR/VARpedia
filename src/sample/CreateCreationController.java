@@ -55,7 +55,7 @@ public class CreateCreationController {
     }
 
     @FXML private void wikiSearch(ActionEvent actionEvent) {
-        sample.wikipedSearch task = new sample.wikipedSearch(_searchTerm.getText());
+        task.WikitSearchTask task = new task.WikitSearchTask(_searchTerm.getText());
         team.submit(task);
         _searchButton.setDisable(true);
         task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
@@ -203,7 +203,7 @@ public class CreateCreationController {
 
     @FXML private void listenAudio(){
 
-        audioPlay task = new audioPlay(_audioChosen);
+        task.audioPlayTask task = new task.audioPlayTask(_audioChosen);
         team.submit(task);
         _listenAudioButton.setDisable(true);
         task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {

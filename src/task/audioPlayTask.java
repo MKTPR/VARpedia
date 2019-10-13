@@ -1,13 +1,13 @@
-package sample;
+package task;
 
 import javafx.concurrent.Task;
 import java.io.IOException;
 
-public class audioPlay extends Task<Void>{
+public class audioPlayTask extends Task<Void>{
 
     private String _chosen;
 
-    public audioPlay(String audioChosen) {
+    public audioPlayTask(String audioChosen) {
         _chosen=audioChosen;
     }
 
