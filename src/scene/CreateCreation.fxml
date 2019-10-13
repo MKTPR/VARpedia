@@ -56,13 +56,13 @@
             </VBox>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <ListView fx:id="_audioList" prefHeight="94.0" prefWidth="359.0" />
+                  <ListView fx:id="_audioList" onMouseClicked="#handleAudioSelected" prefHeight="94.0" prefWidth="359.0" />
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
                         <Button mnemonicParsing="false" text="Button" />
-                        <Button mnemonicParsing="false" text="Merge" />
-                        <Button mnemonicParsing="false" text="Listen" />
-                        <Button mnemonicParsing="false" text="Delete" />
+                        <Button fx:id="_mergeAudioButton" mnemonicParsing="false" onAction="#mergeAudio" text="Merge" />
+                        <Button fx:id="_listenAudioButton" mnemonicParsing="false" onAction="#listenAudio" text="Listen" />
+                        <Button fx:id="_deleteAudioButton" mnemonicParsing="false" onAction="#deleteAudio" text="Delete" />
                      </children>
                   </VBox>
                </children>
