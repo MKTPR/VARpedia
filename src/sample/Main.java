@@ -5,9 +5,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import task.FlikrFetchImagesTask;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 public class Main extends Application {
+
+    //TEMP
+    private ExecutorService team = Executors.newSingleThreadExecutor();
 
     // Global application constants
     public static String applicationName = "VARpedia";
@@ -22,7 +29,6 @@ public class Main extends Application {
         fs.createCreationsDirectory();
         fs.createKeywordsDirectory();
 
-
         // Load GUI
         Parent root = FXMLLoader.load(getClass().getResource("../scene/MainMenu.fxml"));
         primaryStage.setTitle(applicationName);
@@ -31,7 +37,6 @@ public class Main extends Application {
         //primaryStage.getIcons().add(new Image(logo.toURI().toURL().toString()));
 
         Scene mainScene = new Scene(root, applicationDimensions[0], applicationDimensions[1]);
-
         primaryStage.setScene(mainScene);
         primaryStage.show();
     }
