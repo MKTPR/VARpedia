@@ -9,7 +9,7 @@ This project was developed and should be run with OracleJDK1.8_0221 (but non ope
 
 Running
 ---------------------
-This project should be run on the SOFTENG206 virtual image for the most consistent results. Simply take a release and run the application using the command `java VARpedia.jar`
+This project includes a running script if you simply want to run a release jar. Simple use the command `sudo ./runscript` to run the program
 
 License
 ---------------------
