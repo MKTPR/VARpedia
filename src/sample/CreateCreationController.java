@@ -7,11 +7,14 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
+
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -25,11 +28,15 @@ public class CreateCreationController {
     @FXML private Button _searchButton;
     @FXML private Button _previewButton;
     @FXML private Button _saveAudioButton;
+    @FXML private Button _deleteAudioButton;
+    @FXML private Button _listenAudioButton;
+    @FXML private Button _mergeAudioButton;
     @FXML private TextField _searchTerm;
     @FXML private TextField _audioName;
     @FXML private TextArea _content;
     @FXML private ListView _audioList;
     private ObservableList<String> _items;
+    private String _audioChosen=null;
     private String selected;
     private Process process;
 
@@ -87,8 +94,7 @@ public class CreateCreationController {
     }
 
 
-    @FXML
-    private void preview(ActionEvent actionEvent) {
+    @FXML private void preview(ActionEvent actionEvent) {
         selected = _content.getSelectedText();
         int wordCount = selected.split("\\s+").length;
         if (_content.getSelectedText().isEmpty()) {
@@ -118,8 +124,7 @@ public class CreateCreationController {
         selected=null;
     }
 
-    @FXML
-    private void saveAudio(ActionEvent actionEvent) {
+    @FXML private void saveAudio(ActionEvent actionEvent) {
 
         if (_audioName.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -127,15 +132,13 @@ public class CreateCreationController {
             alert.setHeaderText("Invalid Selection");
             alert.setContentText("Please choose a name for the Audio");
             alert.showAndWait();
-        }
-        else if (audioexists(_audioName.getText(),_searchTerm.getText())){
+        } else if (audioexists(_audioName.getText(), _searchTerm.getText())) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Existing Name");
             alert.setContentText("Please select a different name");
             alert.showAndWait();
-        }
-        else {
+        } else {
             selected = _content.getSelectedText();
             int wordCount = selected.split("\\s+").length;
             if (wordCount == 0) {
@@ -151,7 +154,7 @@ public class CreateCreationController {
                 alert.setContentText("Please highlight less than 20 words");
                 alert.showAndWait();
             } else {
-                String cmd = "echo " + selected + " | text2wave -o ./Files/temp/"+ _audioName.getText() + ".wav ";
+                String cmd = "echo " + selected + " | text2wave -o ./Files/temp/" + _audioName.getText() + ".wav ";
                 ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c", "echo " + selected + " | festival --tts");
                 try {
                     Process process = new ProcessBuilder("/bin/bash", "-c", cmd).start();
@@ -163,6 +166,70 @@ public class CreateCreationController {
             refreshAudio();
             selected = null;
         }
+    }
+
+    @FXML private void deleteAudio(){
+        if (_audioChosen==null){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Invalid Selection");
+            alert.setContentText("Please select an AudioFile");
+            alert.showAndWait();
+        }
+        else {
+            String cmd = "rm ./Files/temp/"+_audioChosen;
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation");
+            alert.setHeaderText("You have chosen " + _audioChosen);
+            alert.setContentText("Are you sure you want to delete " + _audioChosen);
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                try {
+                    Process process = new ProcessBuilder("/bin/bash", "-c", cmd).start();
+                    process.waitFor();
+                } catch (IOException | InterruptedException e) {
+                }
+                Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
+                alert2.setTitle("Information Dialog");
+                alert2.setHeaderText("Success!");
+                alert2.setContentText("You have deleted " + _audioChosen);
+                alert2.showAndWait();
+
+                _audioChosen = null;
+                refreshAudio();
+            }
+        }
+    }
+
+    @FXML private void listenAudio(){
+
+        audioPlay task = new audioPlay(_audioChosen);
+        team.submit(task);
+        _listenAudioButton.setDisable(true);
+        task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+            @Override
+            public void handle(WorkerStateEvent workerStateEvent) {
+                if (_audioChosen==null){
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText("Invalid Selection");
+                    alert.setContentText("Please select an AudioFile");
+                    alert.showAndWait();
+                }
+                _audioChosen=null;
+                _listenAudioButton.setDisable(false);
+            }
+        });
+    }
+
+    @FXML private void mergeAudio(){
+    }
+
+
+
+
+    @FXML public void handleAudioSelected(MouseEvent mouseEvent) {
+        _audioChosen= (String) _audioList.getSelectionModel().getSelectedItem();
     }
 
     private Boolean audioexists(String audioName, String searchWord) {
