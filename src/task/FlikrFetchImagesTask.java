@@ -1,10 +1,11 @@
 package task;
 import javafx.concurrent.Task;
-//TODO: Filter header
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import javax.imageio.ImageIO;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -12,19 +13,15 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 
 public class FlikrFetchImagesTask extends Task<Void> {
-    //http://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg
-
 
     private URL _searchURL;
     private String _query;
@@ -101,8 +98,8 @@ public class FlikrFetchImagesTask extends Task<Void> {
                         .replace("{server-id}", photo.getNamedItem("server").getNodeValue())
                         .replace("{id}", photo.getNamedItem("id").getNodeValue())
                         .replace("{secret}", photo.getNamedItem("secret").getNodeValue());
-                System.out.println(endpoint);
-                downloadPhoto("" +i, endpoint);
+
+                //downloadPhoto("" +i, endpoint);
             }
         } catch (ParserConfigurationException e) {
             System.out.println(e.getMessage());
@@ -116,13 +113,9 @@ public class FlikrFetchImagesTask extends Task<Void> {
     }
 
     private void downloadPhoto(String name, String endpoint) throws IOException {
-        URL url = new URL(endpoint);
-        InputStream in = new BufferedInputStream(url.openStream());
-        OutputStream out = new BufferedOutputStream(new FileOutputStream("./temp/{name}.jpg".replace("{name}", name)));
-        for ( int i; (i = in.read()) != -1; ) {
-            out.write(i);
+        // Error, starting bits not correct. File headers say that it starts with hex(<h). probably a tag. endpoint url does work though
+        try(InputStream in = new URL(endpoint).openStream()){
+            Files.copy(in, Paths.get(System.getProperty("user.dir") + "/temp/abc{name}.png".replace("{name}", name)));
         }
-        in.close();
-        out.close();
     }
 }
