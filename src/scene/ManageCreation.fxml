@@ -1,27 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.media.MediaView?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="476.0" prefWidth="748.0" stylesheets="@DarkTheme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ManageCreationController">
+<AnchorPane prefHeight="476.0" prefWidth="815.0" stylesheets="@DarkTheme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ManageCreationController">
    <children>
-      <TextField alignment="CENTER" editable="false" layoutX="14.0" layoutY="14.0" prefHeight="26.0" prefWidth="200.0" text="Creations" />
-      <ListView fx:id="_creationList" layoutX="14.0" layoutY="40.0" onMouseClicked="#handleCreationSelected" prefHeight="400.0" prefWidth="200.0" />
-      <HBox layoutX="14.0" layoutY="440.0" prefHeight="26.0" prefWidth="200.0">
+      <HBox alignment="CENTER" layoutX="1.0" prefHeight="768.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Button fx:id="_deleteCreationButton" mnemonicParsing="false" onAction="#deleteCreationOnClick" prefHeight="26.0" prefWidth="100.0" text="Delete" />
-            <Button fx:id="_playCreationButton" mnemonicParsing="false" onAction="#playCreationOnClick" prefHeight="26.0" prefWidth="100.0" text="Play" />
+            <VBox alignment="TOP_CENTER" prefHeight="482.0" prefWidth="319.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Manage Creation" wrappingWidth="125.1171875" />
+                  <Separator layoutX="51.0" layoutY="26.0" orientation="VERTICAL" prefHeight="9.0" prefWidth="131.0" />
+                  <ListView fx:id="_creationList" onMouseClicked="#handleCreationSelected" prefHeight="420.0" prefWidth="212.0" />
+                  <Separator orientation="VERTICAL" prefHeight="17.0" prefWidth="37.0" />
+                  <HBox prefHeight="26.0" prefWidth="200.0" spacing="5.0">
+                     <children>
+                        <Button fx:id="_deleteCreationButton" mnemonicParsing="false" onAction="#deleteCreationOnClick" prefHeight="26.0" prefWidth="100.0" text="Delete" />
+                        <Button fx:id="_playCreationButton" mnemonicParsing="false" onAction="#playCreationOnClick" prefHeight="26.0" prefWidth="100.0" text="Play" />
+                        <Button fx:id="_cancelManageButton" mnemonicParsing="false" onAction="#goBackMain2" prefHeight="26.0" prefWidth="89.0" text="Go Back" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <VBox alignment="TOP_CENTER" prefHeight="476.0" prefWidth="530.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Media Player" wrappingWidth="105.1171875" />
+                  <Separator orientation="VERTICAL" prefHeight="9.0" prefWidth="131.0" />
+                  <MediaView fx:id="_mediaView" fitHeight="420.0" fitWidth="400.0" />
+                  <Separator orientation="VERTICAL" prefHeight="17.0" prefWidth="37.0" />
+                  <HBox prefHeight="26.0" prefWidth="527.0" spacing="30.0">
+                     <children>
+                        <Button fx:id="_fastPlayButton" mnemonicParsing="false" onAction="#fastPlayMediaOnClick" prefHeight="26.0" prefWidth="91.0" text="Fast Play" />
+                        <Button fx:id="_pauseButton" mnemonicParsing="false" onAction="#pauseMediaOnClick" prefHeight="26.0" prefWidth="71.0" text="Pause" />
+                        <Button fx:id="_playButton" mnemonicParsing="false" onAction="#playMediaOnClick" prefHeight="26.0" prefWidth="71.0" text="Play" />
+                        <Button fx:id="_slowPlayButton" mnemonicParsing="false" onAction="#slowPlayMediaOnClick" prefHeight="26.0" prefWidth="91.0" text="Slow Play" />
+                        <Button fx:id="_restartButton" mnemonicParsing="false" onAction="#restartMediaOnClick" prefHeight="26.0" prefWidth="71.0" text="Restart" />
+                     </children>
+                     <padding>
+                        <Insets left="10.0" right="10.0" />
+                     </padding>
+                  </HBox>
+               </children>
+            </VBox>
          </children>
       </HBox>
-      <Button fx:id="_playButton" layoutX="350.0" layoutY="440.0" mnemonicParsing="false" onAction="#playMediaOnClick" prefHeight="26.0" prefWidth="71.0" text="Play" />
-      <Button fx:id="_pauseButton" layoutX="432.0" layoutY="440.0" mnemonicParsing="false" onAction="#pauseMediaOnClick" prefHeight="26.0" prefWidth="71.0" text="Pause" />
-      <Button fx:id="_fastPlayButton" layoutX="512.0" layoutY="440.0" mnemonicParsing="false" onAction="#fastPlayMediaOnClick" prefHeight="26.0" prefWidth="91.0" text="Fast Play" />
-      <Button fx:id="_slowPlayButton" layoutX="246.0" layoutY="440.0" mnemonicParsing="false" onAction="#slowPlayMediaOnClick" prefHeight="26.0" prefWidth="91.0" text="Slow Play" />
-      <MediaView fx:id="_mediaView" fitHeight="200.0" fitWidth="200.0" layoutX="367.0" layoutY="114.0" />
-      <Button fx:id="_restartButton" layoutX="617.0" layoutY="440.0" mnemonicParsing="false" onAction="#restartMediaOnClick" prefHeight="26.0" prefWidth="71.0" text="Restart" />
    </children>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
 </AnchorPane>

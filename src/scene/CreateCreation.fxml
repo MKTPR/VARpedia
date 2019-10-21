@@ -35,13 +35,14 @@
                      </VBox.margin></Text>
                   <HBox prefHeight="100.0" prefWidth="200.0" stylesheets="@DarkTheme.css">
                      <children>
-                        <Separator prefWidth="10.0" />
+                        <Separator orientation="VERTICAL" prefHeight="5.0" />
                         <TextField fx:id="_searchTerm" promptText="Enter a search term" />
                         <Button fx:id="_searchButton" mnemonicParsing="false" onAction="#wikiSearch" text="Search" />
                      </children>
                   </HBox>
                </children>
             </VBox>
+            <Separator prefHeight="12.0" prefWidth="504.0" />
             <VBox prefHeight="284.0" prefWidth="504.0">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Search Result">

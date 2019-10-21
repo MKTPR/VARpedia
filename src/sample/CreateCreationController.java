@@ -78,6 +78,7 @@ public class CreateCreationController {
                     return;
                 }
 
+
                 _content.setText(task.get_textReturned());
                 _searchButton.setDisable(false);
             }
@@ -88,8 +89,8 @@ public class CreateCreationController {
     private void setUpVoice() {
         ObservableList<String> voiceOptions =
                 FXCollections.observableArrayList(
-                        "American Accent",
-                        "New Zealand Accent",
+                        "British Male",
+                        "American Male",
                         "Robot Voice"
                 );
         _voiceList.setItems(voiceOptions);
@@ -130,9 +131,18 @@ public class CreateCreationController {
             alert.setContentText("Please highlight less than 20 words");
             alert.showAndWait();
         }
+        else if (_voiceList.getSelectionModel()==null){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Invalid Selection");
+            alert.setContentText("Please select a Voice");
+            alert.showAndWait();
+        }
         else {
+            String previewCmd = getVoice("Preview");
+
             //preview the selected part
-            ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c", "echo "+selected+ " | festival --tts");
+            ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c", previewCmd);
             try {
                 pb.start();
             } catch (IOException e) {
@@ -156,6 +166,12 @@ public class CreateCreationController {
             alert.setHeaderText("Existing Name");
             alert.setContentText("Please select a different name");
             alert.showAndWait();
+        } else if (_voiceList.getSelectionModel()==null){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Invalid Selection");
+            alert.setContentText("Please select a Voice");
+            alert.showAndWait();
         } else {
             selected = _content.getSelectedText();
             int wordCount = selected.split("\\s+").length;
@@ -172,8 +188,9 @@ public class CreateCreationController {
                 alert.setContentText("Please highlight less than 20 words");
                 alert.showAndWait();
             } else {
+                String previewCmd= getVoice("Save");
+
                 String cmd = "echo " + selected + " | text2wave -o ./Files/temp/" + _audioName.getText() + ".wav ";
-                ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c", "echo " + selected + " | festival --tts");
                 try {
                     Process process = new ProcessBuilder("/bin/bash", "-c", cmd).start();
                     process.waitFor();
@@ -183,6 +200,31 @@ public class CreateCreationController {
             }
             refreshAudio();
             selected = null;
+        }
+    }
+
+    private String getVoice(String command){
+        String previewCmd=null;
+        if (command == "Save") {
+
+            if (_voiceList.getSelectionModel().getSelectedItem() == "British Male") {
+                previewCmd = "echo " + selected + " | espeak --stdin -v en-us -w ./Files/temp/" + _audioName.getText() + ".wav";
+            } else if (_voiceList.getSelectionModel().getSelectedItem() == "American Male") {
+                previewCmd = "echo " + selected + " | espeak --stdin -v default -w ./Files/temp/" + _audioName.getText()+".wav";
+            } else if (_voiceList.getSelectionModel().getSelectedItem() == "Robot Voice") {
+                previewCmd = "echo " + selected + " | text2wave -o ./Files/temp/" + _audioName.getText() + ".wav ";
+            }
+            return previewCmd;
+        }
+        else {
+            if (_voiceList.getSelectionModel().getSelectedItem() == "British Male") {
+                previewCmd = "echo " + selected + " | espeak --stdin -v en-us";
+            } else if (_voiceList.getSelectionModel().getSelectedItem() == "American Male") {
+                previewCmd = "echo " + selected + " | espeak --stdin -v default";
+            } else if (_voiceList.getSelectionModel().getSelectedItem() == "Robot Voice") {
+                previewCmd = "echo " + selected + " | festival --tts";
+            }
+            return previewCmd;
         }
     }
 
