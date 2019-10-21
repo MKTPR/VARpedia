@@ -28,12 +28,8 @@ public class MainMenuController {
         Parent layout = loader.load();
 
         Scene scene = new Scene(layout);
-        Stage Stage = new Stage();
+        Stage Stage = (Stage) _createCreationButton.getScene().getWindow();
         Stage.setScene(scene);
-        //We can exclude the code below for multi-purpose/concurrency
-        Stage.initModality(Modality.APPLICATION_MODAL);
-        Stage.showAndWait();
-
     }
 
     @FXML public void manageCreationOnClick() throws IOException {
@@ -42,11 +38,8 @@ public class MainMenuController {
         Parent layout = loader.load();
 
         Scene scene = new Scene(layout);
-        Stage Stage = new Stage();
+        Stage Stage = (Stage) _manageCreationButton.getScene().getWindow();
         Stage.setScene(scene);
-        //We can exclude the code below for multi-purpose/concurrency
-        Stage.initModality(Modality.APPLICATION_MODAL);
-        Stage.showAndWait();
     }
     public void playGameOnClick() {
         System.out.println("yo");

@@ -6,8 +6,12 @@ import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
 import javax.swing.*;
 import java.io.File;
@@ -23,12 +27,15 @@ import java.util.concurrent.Executors;
 
 public class CreateCreationController {
 
+
     private ExecutorService team = Executors.newSingleThreadExecutor();
     private File _directory;
     @FXML private Button _searchButton;
+    @FXML private ComboBox _voiceList;
     @FXML private Button _previewButton;
     @FXML private Button _saveAudioButton;
     @FXML private Button _deleteAudioButton;
+    @FXML private Button _cancelCreationButton;
     @FXML private Button _listenAudioButton;
     @FXML private Button _mergeAudioButton;
     @FXML private TextField _searchTerm;
@@ -75,6 +82,17 @@ public class CreateCreationController {
                 _searchButton.setDisable(false);
             }
         });
+        setUpVoice();
+    }
+
+    private void setUpVoice() {
+        ObservableList<String> voiceOptions =
+                FXCollections.observableArrayList(
+                        "American Accent",
+                        "New Zealand Accent",
+                        "Robot Voice"
+                );
+        _voiceList.setItems(voiceOptions);
     }
 
     private void refreshAudio(){
@@ -222,11 +240,9 @@ public class CreateCreationController {
         });
     }
 
+
     @FXML private void mergeAudio(){
     }
-
-
-
 
     @FXML public void handleAudioSelected(MouseEvent mouseEvent) {
         _audioChosen= (String) _audioList.getSelectionModel().getSelectedItem();
@@ -244,4 +260,13 @@ public class CreateCreationController {
         return false;
     }
 
+    @FXML private void goBackMain1(ActionEvent actionEvent) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(Main.class.getResource("/scene/MainMenu.fxml"));
+        Parent layout = loader.load();
+
+        Scene scene = new Scene(layout);
+        Stage Stage = (Stage) _cancelCreationButton.getScene().getWindow();
+        Stage.setScene(scene);
+    }
 }

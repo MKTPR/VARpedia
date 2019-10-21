@@ -13,21 +13,16 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="561.0" prefWidth="504.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.CreateCreationController">
+<AnchorPane prefHeight="561.0" prefWidth="504.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.CreateCreationController">
    <children>
       <VBox layoutX="236.0" layoutY="87.0" prefHeight="380.0" prefWidth="504.0" AnchorPane.bottomAnchor="24.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <VBox prefHeight="81.0" prefWidth="504.0">
                <children>
                   <Separator orientation="VERTICAL" prefHeight="5.0" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Creation Name">
-                     <VBox.margin>
-                        <Insets left="10.0" />
-                     </VBox.margin></Text>
                   <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
                         <Separator prefWidth="10.0" />
-                        <TextField promptText="Enter a creation name" />
                      </children>
                   </HBox>
                </children>
@@ -61,7 +56,7 @@
                         <Separator prefWidth="5.0" />
                         <VBox prefHeight="168.0" prefWidth="115.0" spacing="5.0">
                            <children>
-                              <ComboBox prefWidth="150.0" promptText="Voice 0" />
+                              <ComboBox fx:id="_voiceList" prefWidth="150.0" promptText="Voice 0" />
                               <Button fx:id="_previewButton" mnemonicParsing="false" onAction="#preview" prefHeight="33.0" prefWidth="113.0" text="Preview" />
                               <TextField fx:id="_audioName" promptText="Audio Name" />
                               <Button fx:id="_saveAudioButton" mnemonicParsing="false" onAction="#saveAudio" prefHeight="34.0" prefWidth="119.0" text="Save" />
@@ -72,6 +67,7 @@
                </children>
             </VBox>
             <Separator orientation="VERTICAL" prefHeight="5.0" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="   Manage Audio" />
             <HBox prefHeight="250.0" prefWidth="489.0">
                <children>
                   <Separator prefWidth="10.0" />
@@ -116,7 +112,7 @@
                            <children>
                               <Separator orientation="VERTICAL" prefHeight="5.0" />
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Number of Images" />
-                              <TextField />
+                              <TextField promptText="#1 ~ #10" />
                            </children>
                         </VBox>
                         <Separator orientation="VERTICAL" prefHeight="5.0" />
@@ -127,14 +123,25 @@
                               <ComboBox prefHeight="26.0" prefWidth="115.0" />
                            </children>
                         </VBox>
+                        <Separator layoutX="251.0" layoutY="10.0" orientation="VERTICAL" prefHeight="5.0" />
+                        <VBox layoutX="257.0" layoutY="10.0" prefHeight="57.0" prefWidth="140.0">
+                           <children>
+                              <Separator orientation="VERTICAL" prefHeight="5.0" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Creation Name" />
+                              <TextField fx:id="_creationName" prefHeight="26.0" prefWidth="160.0" />
+                           </children>
+                        </VBox>
                      </children>
                   </HBox>
-                  <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="200.0">
+                  <HBox alignment="BASELINE_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                      <children>
-                        <Button mnemonicParsing="false" text="Cancel" />
                         <Separator prefWidth="5.0" />
+                        <Button fx:id="_cancelCreationButton" mnemonicParsing="false" onAction="#goBackMain1" text="Cancel" />
                         <Button mnemonicParsing="false" text="Create" />
                      </children>
+                     <VBox.margin>
+                        <Insets right="10.0" />
+                     </VBox.margin>
                   </HBox>
                </children>
             </VBox>
