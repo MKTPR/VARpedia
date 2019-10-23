@@ -5,7 +5,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import task.FlikrFetchImagesTask;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
