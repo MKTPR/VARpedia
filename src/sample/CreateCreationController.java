@@ -166,7 +166,7 @@ public class CreateCreationController {
             alert.setHeaderText("Existing Name");
             alert.setContentText("Please select a different name");
             alert.showAndWait();
-        } else if (_voiceList.getSelectionModel()==null){
+        } else if (_voiceList.getSelectionModel().getSelectedItem()==null){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Invalid Selection");
@@ -190,9 +190,8 @@ public class CreateCreationController {
             } else {
                 String previewCmd= getVoice("Save");
 
-                String cmd = "echo " + selected + " | text2wave -o ./Files/temp/" + _audioName.getText() + ".wav ";
                 try {
-                    Process process = new ProcessBuilder("/bin/bash", "-c", cmd).start();
+                    Process process = new ProcessBuilder("/bin/bash", "-c", previewCmd).start();
                     process.waitFor();
                 } catch (IOException | InterruptedException e) {
                     e.printStackTrace();

@@ -13,18 +13,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="561.0" prefWidth="504.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.CreateCreationController">
+<AnchorPane prefHeight="566.0" prefWidth="1034.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.CreateCreationController">
    <children>
-      <VBox layoutX="236.0" layoutY="87.0" prefHeight="380.0" prefWidth="504.0" AnchorPane.bottomAnchor="24.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox layoutX="236.0" layoutY="87.0" prefHeight="380.0" prefWidth="504.0" spacing="10.0" AnchorPane.bottomAnchor="24.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <VBox prefHeight="81.0" prefWidth="504.0">
                <children>
                   <Separator orientation="VERTICAL" prefHeight="5.0" />
-                  <HBox prefHeight="100.0" prefWidth="200.0">
-                     <children>
-                        <Separator prefWidth="10.0" />
-                     </children>
-                  </HBox>
                </children>
             </VBox>
             <VBox prefHeight="97.0" prefWidth="504.0">
@@ -53,7 +48,7 @@
                   <HBox prefHeight="247.0" prefWidth="504.0">
                      <children>
                         <Separator prefHeight="36.0" prefWidth="5.0" />
-                        <TextArea fx:id="_content" prefHeight="247.0" prefWidth="358.0" promptText="Search a term to chose audio segments" />
+                        <TextArea fx:id="_content" prefHeight="206.0" prefWidth="881.0" promptText="Search a term to chose audio segments" />
                         <Separator prefWidth="5.0" />
                         <VBox prefHeight="168.0" prefWidth="115.0" spacing="5.0">
                            <children>
@@ -67,12 +62,16 @@
                   </HBox>
                </children>
             </VBox>
-            <Separator orientation="VERTICAL" prefHeight="5.0" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="   Manage Audio" />
+            <HBox prefHeight="0.0" prefWidth="1034.0" spacing="410.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="   Manage Audio" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Create Your Own Video" />
+               </children>
+            </HBox>
             <HBox prefHeight="250.0" prefWidth="489.0">
                <children>
                   <Separator prefWidth="10.0" />
-                  <ListView fx:id="_audioList" onMouseClicked="#handleAudioSelected" prefHeight="105.0" prefWidth="359.0" />
+                  <ListView fx:id="_audioList" onMouseClicked="#handleAudioSelected" prefHeight="188.0" prefWidth="379.0" />
                   <Separator prefWidth="10.0" />
                   <VBox prefHeight="151.0" prefWidth="117.0">
                      <children>
@@ -94,11 +93,7 @@
                            </VBox.margin></Button>
                      </children>
                   </VBox>
-               </children>
-            </HBox>
-            <VBox prefHeight="200.0" prefWidth="100.0">
-               <children>
-                  <HBox prefHeight="100.0" prefWidth="200.0">
+                  <HBox prefHeight="188.0" prefWidth="531.0">
                      <children>
                         <Separator prefWidth="5.0" />
                         <VBox prefHeight="200.0" prefWidth="100.0">
@@ -125,27 +120,29 @@
                            </children>
                         </VBox>
                         <Separator layoutX="251.0" layoutY="10.0" orientation="VERTICAL" prefHeight="5.0" />
-                        <VBox layoutX="257.0" layoutY="10.0" prefHeight="57.0" prefWidth="140.0">
+                        <VBox layoutX="257.0" layoutY="10.0" prefHeight="188.0" prefWidth="170.0">
                            <children>
                               <Separator orientation="VERTICAL" prefHeight="5.0" />
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Creation Name" />
-                              <TextField fx:id="_creationName" prefHeight="26.0" prefWidth="160.0" />
+                              <TextField fx:id="_creationName" prefHeight="26.0" prefWidth="119.0" />
+                              <HBox alignment="BASELINE_RIGHT" prefHeight="100.0" prefWidth="167.0" spacing="20.0">
+                                 <children>
+                                    <Button fx:id="_cancelCreationButton" mnemonicParsing="false" onAction="#goBackMain1" prefHeight="26.0" prefWidth="93.0" text="Cancel" />
+                                    <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="87.0" text="Create" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets right="10.0" />
+                                 </VBox.margin>
+                              </HBox>
                            </children>
+                           <opaqueInsets>
+                              <Insets left="10.0" />
+                           </opaqueInsets>
                         </VBox>
                      </children>
                   </HBox>
-                  <HBox alignment="BASELINE_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
-                     <children>
-                        <Separator prefWidth="5.0" />
-                        <Button fx:id="_cancelCreationButton" mnemonicParsing="false" onAction="#goBackMain1" text="Cancel" />
-                        <Button mnemonicParsing="false" text="Create" />
-                     </children>
-                     <VBox.margin>
-                        <Insets right="10.0" />
-                     </VBox.margin>
-                  </HBox>
                </children>
-            </VBox>
+            </HBox>
          </children>
       </VBox>
       <Separator layoutX="404.0" layoutY="137.0" prefWidth="5.0" />
