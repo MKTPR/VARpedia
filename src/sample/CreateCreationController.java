@@ -32,7 +32,6 @@ public class CreateCreationController {
     private File _directory;
     @FXML private Button _searchButton;
     @FXML private ComboBox _voiceList;
-    @FXML private ComboBox _audioChoiceList;
     @FXML private Button _previewButton;
     @FXML private Button _saveAudioButton;
     @FXML private Button _deleteAudioButton;
@@ -46,8 +45,12 @@ public class CreateCreationController {
     @FXML private TextField _creationName;
     @FXML private TextArea _content;
     @FXML private ListView _audioList;
+    @FXML private ListView _confirmedAudioList;
+    private Optional<ButtonType> result;
     private ObservableList<String> _items;
+    private ObservableList<String> _confirmedAudio;
     private String _audioChosen=null;
+    private String _removeAudioChosen=null;
     private String selected;
     private Process process;
     private Process process2;
@@ -89,6 +92,7 @@ public class CreateCreationController {
             }
         });
         setUpVoice();
+        _confirmedAudio=FXCollections.observableArrayList();
     }
 
     private void setUpVoice() {
@@ -105,9 +109,9 @@ public class CreateCreationController {
             _directory = new File("./Files/temp");
             _items = FXCollections.observableArrayList(getArrayList(_directory));
             _audioList.setItems(_items);
-            setUpAudioChoiceList();
-
+            setUpConfirmedAudioList();
     }
+
     private ArrayList<String> getArrayList(final File directory) {
         ArrayList<String> list = new ArrayList<String>();
 
@@ -118,8 +122,8 @@ public class CreateCreationController {
         return list;
     }
 
-    private void setUpAudioChoiceList() {
-        _audioChoiceList.setItems(_items);
+    private void setUpConfirmedAudioList() {
+        _confirmedAudioList.setItems(_confirmedAudio);
     }
 
 
@@ -237,7 +241,7 @@ public class CreateCreationController {
         }
     }
 
-    @FXML private void deleteAudio(){
+    @FXML private void deleteAudio(ActionEvent actionEvent){
         if (_audioChosen==null){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
@@ -247,17 +251,15 @@ public class CreateCreationController {
         }
         else {
             String cmd = "rm ./Files/temp/"+_audioChosen;
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Confirmation");
-            alert.setHeaderText("You have chosen " + _audioChosen);
-            alert.setContentText("Are you sure you want to delete " + _audioChosen);
-            Optional<ButtonType> result = alert.showAndWait();
+            makeConfirmation("Confirmation","You have chosen "+_audioChosen, "Are you sure you want to delete "+_audioChosen);
             if (result.get() == ButtonType.OK) {
                 try {
                     Process process = new ProcessBuilder("/bin/bash", "-c", cmd).start();
                     process.waitFor();
                 } catch (IOException | InterruptedException e) {
                 }
+                _confirmedAudio.remove(_audioChosen);
+                refreshAudio();
                 Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
                 alert2.setTitle("Information Dialog");
                 alert2.setHeaderText("Success!");
@@ -265,8 +267,33 @@ public class CreateCreationController {
                 alert2.showAndWait();
 
                 _audioChosen = null;
-                refreshAudio();
             }
+        }
+    }
+
+    @FXML private void removeAudio(ActionEvent actionEvent){
+        if (_removeAudioChosen==null){
+            makeAlert("Error","Invalid Selection", "Please Select an AudioFile");
+        }
+        else {
+            _confirmedAudio.remove(_removeAudioChosen);
+           refreshAudio();
+        }
+    }
+
+    @FXML private void confirmAudio(ActionEvent actionEvent){
+        if (_audioChosen==null){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Invalid Selection");
+            alert.setContentText("Please select an AudioFile");
+            alert.showAndWait();
+        } else if (_confirmedAudio.contains(_audioChosen)){
+            makeAlert("Error", "Invalid Selection", "Selected audio has already been added");
+        }
+        else {
+            _confirmedAudio.add(_audioChosen);
+            refreshAudio();
         }
     }
 
@@ -279,11 +306,7 @@ public class CreateCreationController {
             @Override
             public void handle(WorkerStateEvent workerStateEvent) {
                 if (_audioChosen==null){
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error");
-                    alert.setHeaderText("Invalid Selection");
-                    alert.setContentText("Please select an AudioFile");
-                    alert.showAndWait();
+                    makeAlert("Error", "Invalid Selection", "Please select an AudioFile");
                 }
                 _audioChosen=null;
                 _listenAudioButton.setDisable(false);
@@ -291,45 +314,25 @@ public class CreateCreationController {
         });
     }
 
-
-    @FXML private void mergeAudio(){
-    }
-
     @FXML private void createCreation(){
-        if (_searchTerm.getText().isEmpty() | _imageNumber.getText().isEmpty() | _audioChoiceList.getSelectionModel().getSelectedItem()==null | _creationName.getText().isEmpty()){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Invalid Selection");
-            alert.setContentText("Please fill in all the required parts");
-            alert.showAndWait();
+        if (_searchTerm.getText().isEmpty() | _imageNumber.getText().isEmpty() | _confirmedAudioList.getItems().isEmpty() | _creationName.getText().isEmpty()){
+            makeAlert("Error", "Invalid Selection", "Please fill in all the required parts");
         }
         else if(Integer.parseInt(_imageNumber.getText())>10 | Integer.parseInt(_imageNumber.getText())<1){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Invalid Selection");
-            alert.setContentText("1~10");
-            alert.showAndWait();
+            makeAlert("Error", "Invalid Selection", "1~10");
         }
         else if(creationExists(_creationName.getText())){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Invalid Selection");
-            alert.setContentText("different Name");
-            alert.showAndWait();
+            makeAlert("Error", "Invalid Selection", "different Name");
         }
         else {
-            task.makeCreationTask task = new task.makeCreationTask(_searchTerm.getText(), _imageNumber.getText(), _audioChoiceList.getSelectionModel().getSelectedItem().toString(), _creationName.getText());
+            task.makeCreationTask task = new task.makeCreationTask(_searchTerm.getText(), _imageNumber.getText(), _confirmedAudio, _creationName.getText());
             team.submit(task);
             _createCreationButton.setDisable(true);
             task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
                 @Override
                 public void handle(WorkerStateEvent workerStateEvent) {
                     if (task.get_exitStatus() != 0) {
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Error");
-                        alert.setHeaderText("Unsuccessfull");
-                        alert.setContentText("Sorry");
-                        alert.showAndWait();
+                        makeAlert("Error", "Unsuccessful", "Sorry");
                         return;
                     }
                     _createCreationButton.setDisable(false);
@@ -338,8 +341,28 @@ public class CreateCreationController {
         }
     }
 
+    private void makeAlert(String first, String second, String third){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(first);
+        alert.setHeaderText(second);
+        alert.setContentText(third);
+        alert.showAndWait();
+    }
+
+    private void makeConfirmation(String first, String second, String third){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(first);
+        alert.setHeaderText(second);
+        alert.setContentText(third);
+        result = alert.showAndWait();
+    }
+
     @FXML public void handleAudioSelected(MouseEvent mouseEvent) {
         _audioChosen= (String) _audioList.getSelectionModel().getSelectedItem();
+    }
+
+    @FXML public void handleRemoveAudioSelected(MouseEvent mouseEvent) {
+        _removeAudioChosen= (String) _confirmedAudioList.getSelectionModel().getSelectedItem();
     }
 
     private Boolean audioexists(String audioName, String searchWord) {

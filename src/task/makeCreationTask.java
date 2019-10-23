@@ -5,6 +5,7 @@ import com.flickr4java.flickr.Flickr;
 import com.flickr4java.flickr.FlickrException;
 import com.flickr4java.flickr.REST;
 import com.flickr4java.flickr.photos.*;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 
 import javax.imageio.ImageIO;
@@ -14,14 +15,14 @@ import java.io.*;
 public class makeCreationTask extends Task<Void> {
 
     private String _searchword;
-    private String _audioChosen;
+    private ObservableList<String> _audioChosen;
     private String _creationName;
     private String directory;
 
     private int _exitStatus;
     private int _number;
 
-    public makeCreationTask(String searchWord, String number, String audio, String creationName) {
+    public makeCreationTask(String searchWord, String number, ObservableList<String> audio, String creationName) {
         _searchword=searchWord;
         _number= Integer.parseInt(number);
         _creationName=creationName;

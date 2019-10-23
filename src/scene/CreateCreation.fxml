@@ -62,7 +62,7 @@
                   </HBox>
                </children>
             </VBox>
-            <HBox prefHeight="0.0" prefWidth="1034.0" spacing="410.0">
+            <HBox prefHeight="0.0" prefWidth="1034.0" spacing="230.0">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="   Manage Audio" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Create Your Own Video" />
@@ -71,18 +71,11 @@
             <HBox prefHeight="250.0" prefWidth="489.0">
                <children>
                   <Separator prefWidth="10.0" />
-                  <ListView fx:id="_audioList" onMouseClicked="#handleAudioSelected" prefHeight="188.0" prefWidth="379.0" />
+                  <ListView fx:id="_audioList" onMouseClicked="#handleAudioSelected" prefHeight="189.0" prefWidth="237.0" />
                   <Separator prefWidth="10.0" />
-                  <VBox prefHeight="151.0" prefWidth="117.0">
+                  <VBox prefHeight="189.0" prefWidth="67.0">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="216.0" text="Button">
-                           <VBox.margin>
-                              <Insets bottom="5.0" />
-                           </VBox.margin></Button>
-                        <Button fx:id="_mergeAudioButton" mnemonicParsing="false" onAction="#mergeAudio" prefHeight="26.0" prefWidth="198.0" text="Merge">
-                           <VBox.margin>
-                              <Insets bottom="5.0" />
-                           </VBox.margin></Button>
+                        <Separator orientation="VERTICAL" prefHeight="16.0" prefWidth="45.0" />
                         <Button fx:id="_listenAudioButton" mnemonicParsing="false" onAction="#listenAudio" prefHeight="26.0" prefWidth="209.0" text="Listen">
                            <VBox.margin>
                               <Insets bottom="5.0" />
@@ -91,22 +84,28 @@
                            <VBox.margin>
                               <Insets bottom="5.0" />
                            </VBox.margin></Button>
+                        <Button fx:id="_confirmAudioButton" mnemonicParsing="false" onAction="#confirmAudio" prefHeight="26.0" prefWidth="155.0" text="Add" />
                      </children>
                   </VBox>
-                  <HBox prefHeight="188.0" prefWidth="531.0">
+                  <HBox prefHeight="189.0" prefWidth="659.0">
                      <children>
                         <Separator prefWidth="5.0" />
-                        <VBox prefHeight="200.0" prefWidth="100.0">
+                        <VBox prefHeight="189.0" prefWidth="225.0">
                            <children>
-                              <Separator orientation="VERTICAL" prefHeight="5.0" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Audio" />
-                              <ComboBox fx:id="_audioChoiceList" prefWidth="150.0" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" Audio inserted" />
+                              <HBox prefHeight="182.0" prefWidth="225.0">
+                                 <children>
+                                    <ListView fx:id="_confirmedAudioList" onMouseClicked="#handleRemoveAudioSelected" prefHeight="173.0" prefWidth="176.0" />
+                                    <Separator prefWidth="10.0" />
+                                    <Button fx:id="_removeAudioButton" mnemonicParsing="false" onAction="#removeAudio" prefHeight="43.0" prefWidth="56.0" text="-" />
+                                    <Separator prefWidth="10.0" />
+                                 </children>
+                              </HBox>
                            </children>
                         </VBox>
                         <Separator prefWidth="5.0" />
-                        <VBox prefHeight="200.0" prefWidth="100.0">
+                        <VBox prefHeight="189.0" prefWidth="133.0">
                            <children>
-                              <Separator orientation="VERTICAL" prefHeight="5.0" />
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Number of Images" />
                               <TextField fx:id="_imageNumber" promptText="#1 ~ #10" />
                            </children>
@@ -114,7 +113,6 @@
                         <Separator orientation="VERTICAL" prefHeight="5.0" />
                         <VBox prefHeight="200.0" prefWidth="100.0">
                            <children>
-                              <Separator orientation="VERTICAL" prefHeight="5.0" />
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Music" />
                               <ComboBox prefHeight="26.0" prefWidth="115.0" />
                            </children>
@@ -122,7 +120,6 @@
                         <Separator layoutX="251.0" layoutY="10.0" orientation="VERTICAL" prefHeight="5.0" />
                         <VBox layoutX="257.0" layoutY="10.0" prefHeight="188.0" prefWidth="170.0">
                            <children>
-                              <Separator orientation="VERTICAL" prefHeight="5.0" />
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Creation Name" />
                               <TextField fx:id="_creationName" prefHeight="26.0" prefWidth="119.0" />
                               <HBox alignment="BASELINE_RIGHT" prefHeight="100.0" prefWidth="167.0" spacing="20.0">
