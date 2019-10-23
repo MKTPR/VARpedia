@@ -100,7 +100,7 @@
                            <children>
                               <Separator orientation="VERTICAL" prefHeight="5.0" />
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Audio" />
-                              <ComboBox prefWidth="150.0" />
+                              <ComboBox fx:id="_audioChoiceList" prefWidth="150.0" />
                            </children>
                         </VBox>
                         <Separator prefWidth="5.0" />
@@ -108,7 +108,7 @@
                            <children>
                               <Separator orientation="VERTICAL" prefHeight="5.0" />
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Number of Images" />
-                              <TextField promptText="#1 ~ #10" />
+                              <TextField fx:id="_imageNumber" promptText="#1 ~ #10" />
                            </children>
                         </VBox>
                         <Separator orientation="VERTICAL" prefHeight="5.0" />
@@ -128,7 +128,7 @@
                               <HBox alignment="BASELINE_RIGHT" prefHeight="100.0" prefWidth="167.0" spacing="20.0">
                                  <children>
                                     <Button fx:id="_cancelCreationButton" mnemonicParsing="false" onAction="#goBackMain1" prefHeight="26.0" prefWidth="93.0" text="Cancel" />
-                                    <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="87.0" text="Create" />
+                                    <Button fx:id="_createCreationButton" mnemonicParsing="false" onAction="#createCreation" prefHeight="26.0" prefWidth="87.0" text="Create" />
                                  </children>
                                  <VBox.margin>
                                     <Insets right="10.0" />

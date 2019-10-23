@@ -16,7 +16,7 @@ public class WikitSearchTask extends Task<Void> {
 
         @Override
         protected Void call() throws Exception {
-            String cmd = "rm -r ./Files/temp; mkdir ./Files/temp; wikit " + _searchWord;
+            String cmd = "rm -r ./Files/temp; mkdir ./Files/temp; touch ./Files/shortened.txt; wikit " + _searchWord;
             Process process = new ProcessBuilder("bash", "-c", cmd).start();
 
             _exitStatus = process.waitFor();

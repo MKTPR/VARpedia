@@ -32,20 +32,25 @@ public class CreateCreationController {
     private File _directory;
     @FXML private Button _searchButton;
     @FXML private ComboBox _voiceList;
+    @FXML private ComboBox _audioChoiceList;
     @FXML private Button _previewButton;
     @FXML private Button _saveAudioButton;
     @FXML private Button _deleteAudioButton;
     @FXML private Button _cancelCreationButton;
     @FXML private Button _listenAudioButton;
     @FXML private Button _mergeAudioButton;
+    @FXML private Button _createCreationButton;
     @FXML private TextField _searchTerm;
     @FXML private TextField _audioName;
+    @FXML private TextField _imageNumber;
+    @FXML private TextField _creationName;
     @FXML private TextArea _content;
     @FXML private ListView _audioList;
     private ObservableList<String> _items;
     private String _audioChosen=null;
     private String selected;
     private Process process;
+    private Process process2;
 
 
     @FXML public void deleteCreationOnClick(ActionEvent actionEvent) {
@@ -87,19 +92,20 @@ public class CreateCreationController {
     }
 
     private void setUpVoice() {
-        ObservableList<String> voiceOptions =
+        ObservableList<String> audioOptions =
                 FXCollections.observableArrayList(
                         "British Male",
                         "American Male",
                         "Robot Voice"
                 );
-        _voiceList.setItems(voiceOptions);
+        _voiceList.setItems(audioOptions);
     }
 
     private void refreshAudio(){
             _directory = new File("./Files/temp");
             _items = FXCollections.observableArrayList(getArrayList(_directory));
             _audioList.setItems(_items);
+            setUpAudioChoiceList();
 
     }
     private ArrayList<String> getArrayList(final File directory) {
@@ -110,6 +116,10 @@ public class CreateCreationController {
         }
         Collections.sort(list, String.CASE_INSENSITIVE_ORDER);
         return list;
+    }
+
+    private void setUpAudioChoiceList() {
+        _audioChoiceList.setItems(_items);
     }
 
 
@@ -209,7 +219,7 @@ public class CreateCreationController {
             if (_voiceList.getSelectionModel().getSelectedItem() == "British Male") {
                 previewCmd = "echo " + selected + " | espeak --stdin -v en-us -w ./Files/temp/" + _audioName.getText() + ".wav";
             } else if (_voiceList.getSelectionModel().getSelectedItem() == "American Male") {
-                previewCmd = "echo " + selected + " | espeak --stdin -v default -w ./Files/temp/" + _audioName.getText()+".wav";
+                previewCmd = "echo " + selected + " | espeak --stdin -w ./Files/temp/" + _audioName.getText()+".wav";
             } else if (_voiceList.getSelectionModel().getSelectedItem() == "Robot Voice") {
                 previewCmd = "echo " + selected + " | text2wave -o ./Files/temp/" + _audioName.getText() + ".wav ";
             }
@@ -219,7 +229,7 @@ public class CreateCreationController {
             if (_voiceList.getSelectionModel().getSelectedItem() == "British Male") {
                 previewCmd = "echo " + selected + " | espeak --stdin -v en-us";
             } else if (_voiceList.getSelectionModel().getSelectedItem() == "American Male") {
-                previewCmd = "echo " + selected + " | espeak --stdin -v default";
+                previewCmd = "echo " + selected + " | espeak --stdin ";
             } else if (_voiceList.getSelectionModel().getSelectedItem() == "Robot Voice") {
                 previewCmd = "echo " + selected + " | festival --tts";
             }
@@ -285,6 +295,49 @@ public class CreateCreationController {
     @FXML private void mergeAudio(){
     }
 
+    @FXML private void createCreation(){
+        if (_searchTerm.getText().isEmpty() | _imageNumber.getText().isEmpty() | _audioChoiceList.getSelectionModel().getSelectedItem()==null | _creationName.getText().isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Invalid Selection");
+            alert.setContentText("Please fill in all the required parts");
+            alert.showAndWait();
+        }
+        else if(Integer.parseInt(_imageNumber.getText())>10 | Integer.parseInt(_imageNumber.getText())<1){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Invalid Selection");
+            alert.setContentText("1~10");
+            alert.showAndWait();
+        }
+        else if(creationExists(_creationName.getText())){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Invalid Selection");
+            alert.setContentText("different Name");
+            alert.showAndWait();
+        }
+        else {
+            task.makeCreationTask task = new task.makeCreationTask(_searchTerm.getText(), _imageNumber.getText(), _audioChoiceList.getSelectionModel().getSelectedItem().toString(), _creationName.getText());
+            team.submit(task);
+            _createCreationButton.setDisable(true);
+            task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                @Override
+                public void handle(WorkerStateEvent workerStateEvent) {
+                    if (task.get_exitStatus() != 0) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error");
+                        alert.setHeaderText("Unsuccessfull");
+                        alert.setContentText("Sorry");
+                        alert.showAndWait();
+                        return;
+                    }
+                    _createCreationButton.setDisable(false);
+                }
+            });
+        }
+    }
+
     @FXML public void handleAudioSelected(MouseEvent mouseEvent) {
         _audioChosen= (String) _audioList.getSelectionModel().getSelectedItem();
     }
@@ -296,6 +349,18 @@ public class CreateCreationController {
             process.waitFor();
         } catch (IOException | InterruptedException e) { }
         if (process.exitValue()==0) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean creationExists(String name) {
+        String cmd = "test -f ./Files/creations/" + name +".mp4";
+        try {
+            process2 = new ProcessBuilder("/bin/bash", "-c", cmd).start();
+            process2.waitFor();
+        } catch (IOException | InterruptedException e) { }
+        if (process2.exitValue()==0) {
             return true;
         }
         return false;
