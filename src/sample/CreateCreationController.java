@@ -11,9 +11,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
-import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,14 +22,12 @@ import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-
-
-
 public class CreateCreationController {
-
 
     private ExecutorService team = Executors.newSingleThreadExecutor();
     private File _directory;
+    @FXML private HBox _hbox;
+    @FXML private VBox _vbox;
     @FXML private Button _searchButton;
     @FXML private ComboBox _voiceList;
     @FXML private Button _previewButton;
@@ -70,6 +68,9 @@ public class CreateCreationController {
     }
 
     @FXML private void wikiSearch(ActionEvent actionEvent) {
+        ProgressIndicator _progressSearch = new ProgressIndicator();
+        _hbox.getChildren().add(_progressSearch);
+        _progressSearch.setOpacity(100);
         task.WikitSearchTask task = new task.WikitSearchTask(_searchTerm.getText());
         team.submit(task);
         _searchButton.setDisable(true);
@@ -77,11 +78,7 @@ public class CreateCreationController {
             @Override
             public void handle(WorkerStateEvent workerStateEvent) {
                 if (_searchTerm.getText().isEmpty() | task.get_exitStatus() != 0 | task.get_textReturned() == _searchTerm.getText()+" not found :^(") {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error");
-                    alert.setHeaderText("Invalid Term");
-                    alert.setContentText("Please try a different term");
-                    alert.showAndWait();
+                    makeAlert("Error", "Invalid Term", "Please try a different term");
                     _searchButton.setDisable(false);
                     return;
                 }
@@ -89,6 +86,7 @@ public class CreateCreationController {
 
                 _content.setText(task.get_textReturned());
                 _searchButton.setDisable(false);
+                _progressSearch.setOpacity(0);
             }
         });
         setUpVoice();
@@ -131,26 +129,14 @@ public class CreateCreationController {
         selected = _content.getSelectedText();
         int wordCount = selected.split("\\s+").length;
         if (_content.getSelectedText().isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Invalid Selection");
-            alert.setContentText("Please highlight a part of the given text that you would like to listen to.");
-            alert.showAndWait();
+            makeAlert("Error", "Invalid Selection", "Please highlight a part of the given text that you would like to listen to");
         }
 
         else if (wordCount > 20) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Invalid Selection");
-            alert.setContentText("Please highlight less than 20 words");
-            alert.showAndWait();
+            makeAlert("Error", "Invalid Selection", "Please highlight less than 20 words");
         }
         else if (_voiceList.getSelectionModel()==null){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Invalid Selection");
-            alert.setContentText("Please select a Voice");
-            alert.showAndWait();
+            makeAlert("Error", "Invalid Selection", "Please select a voice");
         }
         else {
             String previewCmd = getVoice("Preview");
@@ -169,38 +155,18 @@ public class CreateCreationController {
     @FXML private void saveAudio(ActionEvent actionEvent) {
 
         if (_audioName.getText().isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Invalid Selection");
-            alert.setContentText("Please choose a name for the Audio");
-            alert.showAndWait();
+            makeAlert("Error", "Invalid Selection", "Please Choose a name for the Audio");
         } else if (audioexists(_audioName.getText(), _searchTerm.getText())) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Existing Name");
-            alert.setContentText("Please select a different name");
-            alert.showAndWait();
+            makeAlert("Error", "Existing Name", "Please select a different name");
         } else if (_voiceList.getSelectionModel().getSelectedItem()==null){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Invalid Selection");
-            alert.setContentText("Please select a Voice");
-            alert.showAndWait();
+            makeAlert("Error", "Invalid Selection", "Please Select a voice");
         } else {
             selected = _content.getSelectedText();
             int wordCount = selected.split("\\s+").length;
             if (wordCount == 0) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText("Invalid Selection");
-                alert.setContentText("Please highlight a part of the given text that you would like to save.");
-                alert.showAndWait();
+                makeAlert("Error", "Invalid Selection", "Please highlight a part of the given text that you would like to save");
             } else if (wordCount > 20) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText("Invalid Selection");
-                alert.setContentText("Please highlight less than 20 words");
-                alert.showAndWait();
+                makeAlert("Error", "Invalid Selection", "Please Highlight less than 20 words");
             } else {
                 String previewCmd= getVoice("Save");
 
@@ -243,11 +209,7 @@ public class CreateCreationController {
 
     @FXML private void deleteAudio(ActionEvent actionEvent){
         if (_audioChosen==null){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Invalid Selection");
-            alert.setContentText("Please select an AudioFile");
-            alert.showAndWait();
+            makeAlert("Error", "Invalid Selection", "Please Select an AudioFile");
         }
         else {
             String cmd = "rm ./Files/temp/"+_audioChosen;
@@ -283,11 +245,7 @@ public class CreateCreationController {
 
     @FXML private void confirmAudio(ActionEvent actionEvent){
         if (_audioChosen==null){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Invalid Selection");
-            alert.setContentText("Please select an AudioFile");
-            alert.showAndWait();
+            makeAlert("Error", "Invalid Selection", "Please select an AudioFile");
         } else if (_confirmedAudio.contains(_audioChosen)){
             makeAlert("Error", "Invalid Selection", "Selected audio has already been added");
         }
@@ -325,6 +283,9 @@ public class CreateCreationController {
             makeAlert("Error", "Invalid Selection", "different Name");
         }
         else {
+            ProgressBar _progressCreation = new ProgressBar();
+            _vbox.getChildren().add(_progressCreation);
+            _progressCreation.setOpacity(100);
             task.makeCreationTask task = new task.makeCreationTask(_searchTerm.getText(), _imageNumber.getText(), _confirmedAudio, _creationName.getText());
             team.submit(task);
             _createCreationButton.setDisable(true);
@@ -336,6 +297,7 @@ public class CreateCreationController {
                         return;
                     }
                     _createCreationButton.setDisable(false);
+                    _progressCreation.setOpacity(0);
                 }
             });
         }

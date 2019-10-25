@@ -21,6 +21,8 @@ public class makeCreationTask extends Task<Void> {
 
     private int _exitStatus;
     private int _number;
+    private String audio=null;
+    private Double value=0.0;
 
     public makeCreationTask(String searchWord, String number, ObservableList<String> audio, String creationName) {
         _searchword=searchWord;
@@ -40,8 +42,22 @@ public class makeCreationTask extends Task<Void> {
     }
 
     private void mergeAV() {
+
+        String combine = "sox ";
+        for (int i=0; i<_audioChosen.size();i++){
+            combine = combine + "./Files/temp/"+ _audioChosen.get(i) + " ";
+        }
+        combine= combine + "./Files/temp/finaloutput.wav";
+
         try {
-            String cmd = "ffmpeg -y -i "+directory+ "/Video/" + _creationName + ".mp4 -i ./Files/temp/" + _audioChosen + " -r 25 ./Files/creations/" + _creationName + ".mp4";
+            Process combineAudioProcess = new ProcessBuilder("bash", "-c", combine).start();
+            combineAudioProcess.waitFor();
+        } catch (InterruptedException | IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            String cmd = "ffmpeg -y -i "+directory+ "/Video/" + _creationName + ".mp4 -i ./Files/temp/finaloutput.wav -r 25 ./Files/creations/" + _creationName + ".mp4";
             Process process = new ProcessBuilder("bash", "-c", cmd).start();
             process.waitFor();
         } catch (InterruptedException | IOException e) {
@@ -52,13 +68,17 @@ public class makeCreationTask extends Task<Void> {
     private double getDuration(){
 
         try {
-            String cmd = "soxi -D ./Files/temp/"+_audioChosen;
-            Process process = new ProcessBuilder("bash","-c",cmd).start();
-            BufferedReader stdout = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            _exitStatus = process.waitFor();
-            String audio = stdout.readLine();
-            stdout.close();
-            return Double.parseDouble(audio);
+            for (int i=0;i<_audioChosen.size();i++) {
+                String cmd = "soxi -D ./Files/temp/" + _audioChosen.get(i);
+                Process process = new ProcessBuilder("bash", "-c", cmd).start();
+                BufferedReader stdout = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                _exitStatus = process.waitFor();
+                audio = stdout.readLine();
+                value = value + Double.parseDouble(audio);
+                stdout.close();
+            }
+
+            return value;
         } catch (InterruptedException | IOException e) {
             e.printStackTrace();
         }
