@@ -40,7 +40,4 @@ public class MainMenuController {
         Stage Stage = (Stage) _manageCreationButton.getScene().getWindow();
         Stage.setScene(scene);
     }
-    public void helpOnClick() {
-        System.out.println("yo");
-    }
 }

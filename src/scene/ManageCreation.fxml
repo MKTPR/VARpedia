@@ -4,12 +4,13 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.media.MediaView?>
+<?import javafx.scene.shape.Polygon?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -30,14 +31,10 @@
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="68.0" prefWidth="298.0">
                      <children>
-                        <Button fx:id="_homeButton1" mnemonicParsing="false" onAction="#goBackMain1">
-                           <graphic>
-                              <ImageView fitHeight="39.0" fitWidth="40.0">
-                                 <image>
-                                    <Image url="@/resources/vectorstock_274787.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
+                        <Button fx:id="_homeButton1" mnemonicParsing="false" onAction="#goBackMain1" text="Back To Home Screen">
+                           <font>
+                              <Font name="Lato Black" size="13.0" />
+                           </font>
                         </Button>
                      </children>
                   </HBox>
@@ -87,34 +84,41 @@
                         </Text>
                         <Separator orientation="VERTICAL" prefHeight="9.0" prefWidth="131.0" />
                         <MediaView fx:id="_mediaView" fitHeight="390.0" fitWidth="400.0" />
-                        <Separator orientation="VERTICAL" prefHeight="17.0" prefWidth="37.0" />
-                        <HBox prefHeight="26.0" prefWidth="527.0" spacing="30.0">
+                        <Slider fx:id="_mediaSlider" blockIncrement="0.0" majorTickUnit="6000.0" max="1.0" minorTickCount="60" />
+                        <HBox alignment="CENTER" prefHeight="26.0" prefWidth="527.0" spacing="30.0">
                            <children>
-                              <Button fx:id="_fastPlayButton" mnemonicParsing="false" onAction="#fastPlayMediaOnClick" prefHeight="26.0" prefWidth="91.0" text="Fast Play">
+                              <Button fx:id="_fastPlayButton" mnemonicParsing="false" onAction="#fastPlayMediaOnClick" prefHeight="26.0" prefWidth="91.0" text="0.5 X">
                                  <font>
                                     <Font name="Lato Black" size="13.0" />
                                  </font>
                               </Button>
-                              <Button fx:id="_pauseButton" mnemonicParsing="false" onAction="#pauseMediaOnClick" prefHeight="26.0" prefWidth="71.0" text="Pause">
+                              <Button fx:id="_pauseButton" mnemonicParsing="false" onAction="#pauseMediaOnClick" prefHeight="26.0" prefWidth="71.0">
+                                 <font>
+                                    <Font name="Lato Black" size="13.0" />
+                                 </font>
+                                 <graphic>
+                                    <Rectangle arcHeight="7.0" arcWidth="7.0" fill="WHITE" height="18.0" stroke="BLACK" strokeType="INSIDE" width="18.0" />
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="_playButton" mnemonicParsing="false" onAction="#playMediaOnClick" prefHeight="26.0" prefWidth="71.0">
+                                 <font>
+                                    <Font name="Lato Black" size="13.0" />
+                                 </font>
+                                 <graphic>
+                                    <Polygon fill="#fefeff" points="-15.717644691467285, 40.437530517578125, 5.8741455078125, 40.7183837890625, -3.8195486068725586, 22.616479873657227" rotate="90.0" stroke="BLACK" strokeType="INSIDE" />
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="_slowPlayButton" mnemonicParsing="false" onAction="#slowPlayMediaOnClick" prefHeight="26.0" prefWidth="91.0" text="2 X">
                                  <font>
                                     <Font name="Lato Black" size="13.0" />
                                  </font>
                               </Button>
-                              <Button fx:id="_playButton" mnemonicParsing="false" onAction="#playMediaOnClick" prefHeight="26.0" prefWidth="71.0" text="Play">
+                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Volume" wrappingWidth="52.45849609375">
                                  <font>
                                     <Font name="Lato Black" size="13.0" />
                                  </font>
-                              </Button>
-                              <Button fx:id="_slowPlayButton" mnemonicParsing="false" onAction="#slowPlayMediaOnClick" prefHeight="26.0" prefWidth="91.0" text="Slow Play">
-                                 <font>
-                                    <Font name="Lato Black" size="13.0" />
-                                 </font>
-                              </Button>
-                              <Button fx:id="_restartButton" mnemonicParsing="false" onAction="#restartMediaOnClick" prefHeight="26.0" prefWidth="71.0" text="Restart">
-                                 <font>
-                                    <Font name="Lato Black" size="13.0" />
-                                 </font>
-                              </Button>
+                              </Text>
+                              <Slider fx:id="_volumeSlider" prefHeight="16.0" prefWidth="109.0" />
                            </children>
                            <padding>
                               <Insets left="10.0" right="10.0" />

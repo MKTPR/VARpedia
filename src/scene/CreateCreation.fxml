@@ -31,7 +31,10 @@
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="68.0" prefWidth="298.0">
                      <children>
-                        <Button fx:id="_homeButton2" mnemonicParsing="false" onAction="#goBackMain2" text="Button" />
+                        <Button fx:id="_homeButton2" mnemonicParsing="false" onAction="#goBackMain2" text="Back To Home Screen">
+                           <font>
+                              <Font name="Lato Black" size="13.0" />
+                           </font></Button>
                      </children>
                   </HBox>
                </children>
