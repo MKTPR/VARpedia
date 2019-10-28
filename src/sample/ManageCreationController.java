@@ -26,7 +26,7 @@ public class ManageCreationController {
     private ObservableList<String> _items;
     private File _directory;
     @FXML private Button _deleteCreationButton;
-    @FXML private Button _cancelManageButton;
+    @FXML private Button _homeButton1;
     @FXML private Button _playCreationButton;
     @FXML private Button _playButton;
     @FXML private Button _pauseButton;
@@ -59,12 +59,12 @@ public class ManageCreationController {
     @FXML public void deleteCreationOnClick(ActionEvent actionEvent) {
 
         if (validSelection()) {
-            String cmd = "rm -rf ./Files/creations/" + _creationChosen + " ./Files/Keywords/" + _creationChosen;
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirmation");
             alert.setHeaderText("You have chosen " + _creationChosen);
             alert.setContentText("Are you sure you want to delete " + _creationChosen);
             Optional<ButtonType> result = alert.showAndWait();
+            String cmd = "rm -rf ./Files/creations/" + _creationChosen + " ./Files/keywords/" + _creationChosen;
             if (result.get() == ButtonType.OK) {
                 {
                     try {
@@ -135,13 +135,13 @@ public class ManageCreationController {
         _creationChosen= (String) _creationList.getSelectionModel().getSelectedItem();
     }
 
-    @FXML public void goBackMain2(ActionEvent actionEvent) throws IOException {
+    @FXML public void goBackMain1(ActionEvent actionEvent) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(Main.class.getResource("/scene/MainMenu.fxml"));
         Parent layout = loader.load();
 
         Scene scene = new Scene(layout);
-        Stage Stage = (Stage) _cancelManageButton.getScene().getWindow();
+        Stage Stage = (Stage) _homeButton1.getScene().getWindow();
         Stage.setScene(scene);
     }
 

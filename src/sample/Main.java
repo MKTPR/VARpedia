@@ -17,7 +17,7 @@ public class Main extends Application {
 
     // Global application constants
     public static String applicationName = "VARpedia";
-    public static int[] applicationDimensions = {500,500};
+    public static int[] applicationDimensions = {1034,566};
 
     @Override
     public void start(Stage primaryStage) throws Exception{

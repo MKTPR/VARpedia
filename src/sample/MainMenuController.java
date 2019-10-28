@@ -20,7 +20,6 @@ public class MainMenuController {
 
     @FXML private Button _createCreationButton;
     @FXML private Button _manageCreationButton;
-    @FXML private Button _playGameButton;
 
     public void createCreationOnClick() throws IOException{
         FXMLLoader loader = new FXMLLoader();
@@ -41,11 +40,7 @@ public class MainMenuController {
         Stage Stage = (Stage) _manageCreationButton.getScene().getWindow();
         Stage.setScene(scene);
     }
-    public void playGameOnClick() {
-        System.out.println("yo");
-    }
     public void helpOnClick() {
         System.out.println("yo");
     }
-
 }

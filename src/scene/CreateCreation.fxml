@@ -11,68 +11,134 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="566.0" prefWidth="1034.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.CreateCreationController">
    <children>
       <VBox layoutX="236.0" layoutY="87.0" prefHeight="380.0" prefWidth="504.0" spacing="10.0" AnchorPane.bottomAnchor="24.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <VBox prefHeight="81.0" prefWidth="504.0">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Separator orientation="VERTICAL" prefHeight="5.0" />
-               </children>
-            </VBox>
-            <VBox prefHeight="97.0" prefWidth="504.0">
-               <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Search Term:">
-                     <VBox.margin>
-                        <Insets left="10.0" />
-                     </VBox.margin></Text>
-                  <HBox fx:id="_hbox" prefHeight="100.0" prefWidth="200.0" stylesheets="@DarkTheme.css">
+                  <HBox alignment="CENTER_RIGHT" prefHeight="68.0" prefWidth="629.0">
                      <children>
-                        <Separator orientation="VERTICAL" prefHeight="5.0" />
-                        <TextField fx:id="_searchTerm" promptText="Enter a search term" />
-                        <Button fx:id="_searchButton" mnemonicParsing="false" onAction="#wikiSearch" text="Search" />
-                        <Separator prefHeight="13.0" prefWidth="14.0" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Make A New Creation" textAlignment="CENTER" wrappingWidth="289.2294921875">
+                           <font>
+                              <Font name="Lato Black" size="27.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="68.0" prefWidth="298.0">
+                     <children>
+                        <Button fx:id="_homeButton2" mnemonicParsing="false" onAction="#goBackMain2" text="Button" />
                      </children>
                   </HBox>
                </children>
-            </VBox>
-            <Separator prefHeight="12.0" prefWidth="504.0" />
-            <VBox prefHeight="284.0" prefWidth="504.0">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets right="20.0" />
+               </padding>
+            </HBox>
+            <VBox alignment="CENTER" prefHeight="97.0" prefWidth="504.0">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Search Result">
+                  <HBox alignment="CENTER" prefHeight="22.0" prefWidth="1034.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Search Term:">
+                           <font>
+                              <Font name="Lato Black" size="16.0" />
+                           </font>
+                        </Text>
+                     </children>
+                     <padding>
+                        <Insets right="910.0" />
+                     </padding>
+                  </HBox>
+                  <HBox fx:id="_hbox" alignment="CENTER" prefHeight="39.0" prefWidth="1034.0" stylesheets="@DarkTheme.css">
+                     <children>
+                        <Separator orientation="VERTICAL" prefHeight="5.0" />
+                        <TextField fx:id="_searchTerm" prefHeight="26.0" prefWidth="156.0" promptText="Enter a search term">
+                           <font>
+                              <Font name="Lato Black" size="13.0" />
+                           </font></TextField>
+                        <Button fx:id="_searchButton" mnemonicParsing="false" onAction="#wikiSearch" prefHeight="26.0" prefWidth="145.0" text="Search">
+                           <font>
+                              <Font name="Lato Black" size="13.0" />
+                           </font></Button>
+                        <Separator prefHeight="13.0" prefWidth="14.0" />
+                     </children>
+                     <padding>
+                        <Insets right="700.0" />
+                     </padding>
+                  </HBox>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="202.0" prefWidth="1034.0">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Search Result">
+                           <font>
+                              <Font name="Lato Black" size="16.0" />
+                           </font>
+                        </Text>
+                     </children>
                      <VBox.margin>
                         <Insets left="10.0" />
                      </VBox.margin>
-                  </Text>
-                  <HBox prefHeight="247.0" prefWidth="504.0">
+                     <padding>
+                        <Insets right="920.0" />
+                     </padding>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="247.0" prefWidth="504.0">
                      <children>
-                        <Separator prefHeight="36.0" prefWidth="5.0" />
-                        <TextArea fx:id="_content" prefHeight="206.0" prefWidth="881.0" promptText="Search a term to chose audio segments" />
+                        <TextArea fx:id="_content" prefHeight="206.0" prefWidth="881.0" promptText="Search a term to chose audio segments">
+                           <font>
+                              <Font name="Lato Black" size="13.0" />
+                           </font></TextArea>
                         <Separator prefWidth="5.0" />
                         <VBox prefHeight="168.0" prefWidth="115.0" spacing="5.0">
                            <children>
-                              <ComboBox fx:id="_voiceList" prefWidth="150.0" promptText="Voice 0" />
-                              <Button fx:id="_previewButton" mnemonicParsing="false" onAction="#preview" prefHeight="33.0" prefWidth="113.0" text="Preview" />
-                              <TextField fx:id="_audioName" promptText="Audio Name" />
-                              <Button fx:id="_saveAudioButton" mnemonicParsing="false" onAction="#saveAudio" prefHeight="34.0" prefWidth="119.0" text="Save" />
+                              <ComboBox fx:id="_voiceList" prefWidth="150.0" promptText="Voices" />
+                              <Button fx:id="_previewButton" mnemonicParsing="false" onAction="#preview" prefHeight="33.0" prefWidth="113.0" text="Preview">
+                                 <font>
+                                    <Font name="Lato Black" size="13.0" />
+                                 </font></Button>
+                              <TextField fx:id="_audioName" promptText="Audio Name">
+                                 <font>
+                                    <Font name="Lato Black" size="13.0" />
+                                 </font></TextField>
+                              <Button fx:id="_saveAudioButton" mnemonicParsing="false" onAction="#saveAudio" prefHeight="34.0" prefWidth="119.0" text="Save">
+                                 <font>
+                                    <Font name="Lato Black" size="13.0" />
+                                 </font></Button>
                            </children>
                         </VBox>
                      </children>
                   </HBox>
                </children>
             </VBox>
-            <HBox prefHeight="0.0" prefWidth="1034.0" spacing="230.0">
+            <HBox alignment="CENTER" prefHeight="0.0" prefWidth="1034.0" spacing="150.0">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="   Manage Audio" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Create Your Own Video" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="   Manage Audio" wrappingWidth="184.27200317382812">
+                     <font>
+                        <Font name="Lato Black" size="16.0" />
+                     </font></Text>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Create Your Own Video" wrappingWidth="199.59201049804688">
+                     <font>
+                        <Font name="Lato Black" size="16.0" />
+                     </font></Text>
                </children>
+               <padding>
+                  <Insets right="490.0" />
+               </padding>
             </HBox>
-            <HBox prefHeight="250.0" prefWidth="489.0">
+            <HBox alignment="CENTER" prefHeight="209.0" prefWidth="1034.0">
                <children>
                   <Separator prefWidth="10.0" />
-                  <ListView fx:id="_audioList" onMouseClicked="#handleAudioSelected" prefHeight="189.0" prefWidth="237.0" />
+                  <ListView fx:id="_audioList" onMouseClicked="#handleAudioSelected" prefHeight="178.0" prefWidth="186.0" />
                   <Separator prefWidth="10.0" />
                   <VBox prefHeight="189.0" prefWidth="67.0">
                      <children>
@@ -88,12 +154,15 @@
                         <Button fx:id="_confirmAudioButton" mnemonicParsing="false" onAction="#confirmAudio" prefHeight="26.0" prefWidth="155.0" text="Add" />
                      </children>
                   </VBox>
-                  <HBox prefHeight="189.0" prefWidth="659.0">
+                  <HBox prefHeight="178.0" prefWidth="751.0">
                      <children>
                         <Separator prefWidth="5.0" />
                         <VBox prefHeight="189.0" prefWidth="225.0">
                            <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" Audio inserted" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" Audio inserted">
+                                 <font>
+                                    <Font name="Lato Black" size="15.0" />
+                                 </font></Text>
                               <HBox prefHeight="182.0" prefWidth="225.0">
                                  <children>
                                     <ListView fx:id="_confirmedAudioList" onMouseClicked="#handleRemoveAudioSelected" prefHeight="173.0" prefWidth="176.0" />
@@ -105,31 +174,46 @@
                            </children>
                         </VBox>
                         <Separator prefWidth="5.0" />
-                        <VBox prefHeight="189.0" prefWidth="133.0">
+                        <VBox prefHeight="178.0" prefWidth="200.0">
                            <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Number of Images" />
-                              <TextField fx:id="_imageNumber" promptText="#1 ~ #10" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Number of Images">
+                                 <font>
+                                    <Font name="Lato Black" size="15.0" />
+                                 </font></Text>
+                              <ComboBox fx:id="_numberList" prefHeight="26.0" prefWidth="169.0" promptText="Number of Images" />
                            </children>
                         </VBox>
                         <Separator orientation="VERTICAL" prefHeight="5.0" />
-                        <VBox prefHeight="200.0" prefWidth="100.0">
+                        <VBox prefHeight="178.0" prefWidth="194.0">
                            <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Music" />
-                              <ComboBox prefHeight="26.0" prefWidth="115.0" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Music">
+                                 <font>
+                                    <Font name="Lato Black" size="15.0" />
+                                 </font></Text>
+                              <ComboBox fx:id="_musicList" prefHeight="26.0" prefWidth="152.0" promptText="Music" />
                            </children>
                         </VBox>
                         <Separator layoutX="251.0" layoutY="10.0" orientation="VERTICAL" prefHeight="5.0" />
-                        <VBox fx:id="_vbox" layoutX="257.0" layoutY="10.0" prefHeight="188.0" prefWidth="170.0">
+                        <VBox fx:id="_vbox" layoutX="257.0" layoutY="10.0" prefHeight="178.0" prefWidth="199.0">
                            <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Creation Name" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Creation Name">
+                                 <font>
+                                    <Font name="Lato Black" size="15.0" />
+                                 </font></Text>
                               <TextField fx:id="_creationName" prefHeight="26.0" prefWidth="119.0" />
-                              <HBox alignment="BASELINE_RIGHT" prefHeight="58.0" prefWidth="160.0" spacing="20.0">
+                              <HBox alignment="BASELINE_RIGHT" prefHeight="109.0" prefWidth="157.0" spacing="20.0">
                                  <children>
-                                    <Button fx:id="_cancelCreationButton" mnemonicParsing="false" onAction="#goBackMain1" prefHeight="26.0" prefWidth="93.0" text="Cancel" />
-                                    <Button fx:id="_createCreationButton" mnemonicParsing="false" onAction="#createCreation" prefHeight="26.0" prefWidth="87.0" text="Create" />
+                                    <Button fx:id="_cancelCreationButton" mnemonicParsing="false" onAction="#goBackMain2" prefHeight="26.0" prefWidth="93.0" text="Cancel">
+                                       <font>
+                                          <Font name="Lato Black" size="13.0" />
+                                       </font></Button>
+                                    <Button fx:id="_createCreationButton" mnemonicParsing="false" onAction="#createCreation" prefHeight="26.0" prefWidth="79.0" text="Create">
+                                       <font>
+                                          <Font name="Lato Black" size="13.0" />
+                                       </font></Button>
                                  </children>
                                  <VBox.margin>
-                                    <Insets right="10.0" />
+                                    <Insets />
                                  </VBox.margin>
                               </HBox>
                            </children>
@@ -138,6 +222,9 @@
                            </opaqueInsets>
                         </VBox>
                      </children>
+                     <padding>
+                        <Insets right="10.0" />
+                     </padding>
                   </HBox>
                </children>
             </HBox>

@@ -17,6 +17,7 @@ public class makeCreationTask extends Task<Void> {
     private String _searchword;
     private ObservableList<String> _audioChosen;
     private String _creationName;
+    private String _music;
     private String directory;
 
     private int _exitStatus;
@@ -24,30 +25,32 @@ public class makeCreationTask extends Task<Void> {
     private String audio=null;
     private Double value=0.0;
 
-    public makeCreationTask(String searchWord, String number, ObservableList<String> audio, String creationName) {
+    public makeCreationTask(String searchWord, int number, ObservableList<String> audio, String creationName, String music) {
         _searchword=searchWord;
-        _number= Integer.parseInt(number);
+        _number= number;
+        _music=music;
         _creationName=creationName;
         _audioChosen=audio;
         directory= "./Files/keywords/"+_creationName;
-
     }
 
     @Override
     protected Void call() throws Exception {
         this.flickrSearch();
         this.makeCreation();
+        this.mergeAudios();
+        this.addMusic();
         this.mergeAV();
         return null;
     }
 
-    private void mergeAV() {
+    private void mergeAudios() {
 
         String combine = "sox ";
         for (int i=0; i<_audioChosen.size();i++){
             combine = combine + "./Files/temp/"+ _audioChosen.get(i) + " ";
         }
-        combine= combine + "./Files/temp/finaloutput.wav";
+        combine= combine + "./Files/temp/finaloutput2.wav";
 
         try {
             Process combineAudioProcess = new ProcessBuilder("bash", "-c", combine).start();
@@ -56,8 +59,33 @@ public class makeCreationTask extends Task<Void> {
             e.printStackTrace();
         }
 
+    }
+
+    private void addMusic() {
+        String chosen= null;
+
+        if (_music!=null){
+            if (_music == "Hiphop-beats") {
+                chosen = "grapes_-_I_dunno.mp3";
+            } else if (_music == "Jazzy Funk") {
+                chosen = "Whitewolf225_-_Toronto_Is_My_Beat.mp3";
+            }
+
+            try {
+                String addMusic = "ffmpeg -y -i ./Music/" + chosen + " -i ./Files/temp/finaloutput2.wav -filter_complex \"[0:0]volume=0.4[a];[1:0]volume=1.5[b];[a][b]amix=inputs=2:duration=shortest\" -c:a libmp3lame ./Files/temp/finaloutput.wav";
+                Process process = new ProcessBuilder("bash", "-c", addMusic).start();
+                process.waitFor();
+            } catch (InterruptedException | IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    private void mergeAV() {
+
         try {
-            String cmd = "ffmpeg -y -i "+directory+ "/Video/" + _creationName + ".mp4 -i ./Files/temp/finaloutput.wav -r 25 ./Files/creations/" + _creationName + ".mp4";
+            String cmd = "ffmpeg -y -i "+directory+ "/Video/" + _creationName + ".mp4 -i ./Files/temp/finaloutput.wav -r 25 ./Files/creations/" + _creationName + ".mp4; rm ./Files/temp/finaloutput.wav; rm ./Files/temp/finaloutput2.wav ";
             Process process = new ProcessBuilder("bash", "-c", cmd).start();
             process.waitFor();
         } catch (InterruptedException | IOException e) {

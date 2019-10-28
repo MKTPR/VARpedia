@@ -29,7 +29,10 @@ public class CreateCreationController {
     @FXML private HBox _hbox;
     @FXML private VBox _vbox;
     @FXML private Button _searchButton;
+    @FXML private Button _homeButton2;
     @FXML private ComboBox _voiceList;
+    @FXML private ComboBox _musicList;
+    @FXML private ComboBox _numberList;
     @FXML private Button _previewButton;
     @FXML private Button _saveAudioButton;
     @FXML private Button _deleteAudioButton;
@@ -39,7 +42,6 @@ public class CreateCreationController {
     @FXML private Button _createCreationButton;
     @FXML private TextField _searchTerm;
     @FXML private TextField _audioName;
-    @FXML private TextField _imageNumber;
     @FXML private TextField _creationName;
     @FXML private TextArea _content;
     @FXML private ListView _audioList;
@@ -78,7 +80,9 @@ public class CreateCreationController {
             @Override
             public void handle(WorkerStateEvent workerStateEvent) {
                 if (_searchTerm.getText().isEmpty() | task.get_exitStatus() != 0 | task.get_textReturned() == _searchTerm.getText()+" not found :^(") {
+                    _progressSearch.setOpacity(0);
                     makeAlert("Error", "Invalid Term", "Please try a different term");
+
                     _searchButton.setDisable(false);
                     return;
                 }
@@ -89,18 +93,31 @@ public class CreateCreationController {
                 _progressSearch.setOpacity(0);
             }
         });
-        setUpVoice();
+        setUp();
         _confirmedAudio=FXCollections.observableArrayList();
     }
 
-    private void setUpVoice() {
+    private void setUp() {
         ObservableList<String> audioOptions =
                 FXCollections.observableArrayList(
                         "British Male",
-                        "American Male",
-                        "Robot Voice"
+                        "American Male"
                 );
         _voiceList.setItems(audioOptions);
+
+        ObservableList<String> voiceOptions =
+                FXCollections.observableArrayList(
+                        "Hiphop-beats",
+                        "Jazzy Funk",
+                        "No Music"
+                );
+        _musicList.setItems(voiceOptions);
+
+        ObservableList<Integer> numberOption= FXCollections.observableArrayList();
+            for (int i = 1; i <= 10; i++) {
+                numberOption.add(i);
+            }
+            _numberList.setItems(numberOption);
     }
 
     private void refreshAudio(){
@@ -187,21 +204,17 @@ public class CreateCreationController {
         if (command == "Save") {
 
             if (_voiceList.getSelectionModel().getSelectedItem() == "British Male") {
-                previewCmd = "echo " + selected + " | espeak --stdin -v en-us -w ./Files/temp/" + _audioName.getText() + ".wav";
+                previewCmd = "echo \"" + selected + "\" | espeak --stdin -v en-us -w ./Files/temp/" + _audioName.getText() + ".wav";
             } else if (_voiceList.getSelectionModel().getSelectedItem() == "American Male") {
-                previewCmd = "echo " + selected + " | espeak --stdin -w ./Files/temp/" + _audioName.getText()+".wav";
-            } else if (_voiceList.getSelectionModel().getSelectedItem() == "Robot Voice") {
-                previewCmd = "echo " + selected + " | text2wave -o ./Files/temp/" + _audioName.getText() + ".wav ";
+                previewCmd = "echo \"" + selected + "\" | espeak --stdin -w ./Files/temp/" + _audioName.getText()+".wav";
             }
             return previewCmd;
         }
         else {
             if (_voiceList.getSelectionModel().getSelectedItem() == "British Male") {
-                previewCmd = "echo " + selected + " | espeak --stdin -v en-us";
+                previewCmd = "echo \"" + selected + "\" | espeak --stdin -v en-us";
             } else if (_voiceList.getSelectionModel().getSelectedItem() == "American Male") {
-                previewCmd = "echo " + selected + " | espeak --stdin ";
-            } else if (_voiceList.getSelectionModel().getSelectedItem() == "Robot Voice") {
-                previewCmd = "echo " + selected + " | festival --tts";
+                previewCmd = "echo \"" + selected + "\" | espeak --stdin ";
             }
             return previewCmd;
         }
@@ -273,20 +286,20 @@ public class CreateCreationController {
     }
 
     @FXML private void createCreation(){
-        if (_searchTerm.getText().isEmpty() | _imageNumber.getText().isEmpty() | _confirmedAudioList.getItems().isEmpty() | _creationName.getText().isEmpty()){
+        if (_searchTerm.getText().isEmpty() | _numberList.getSelectionModel().getSelectedItem()==null | _confirmedAudioList.getItems().isEmpty() | _creationName.getText().isEmpty()){
             makeAlert("Error", "Invalid Selection", "Please fill in all the required parts");
-        }
-        else if(Integer.parseInt(_imageNumber.getText())>10 | Integer.parseInt(_imageNumber.getText())<1){
-            makeAlert("Error", "Invalid Selection", "1~10");
         }
         else if(creationExists(_creationName.getText())){
             makeAlert("Error", "Invalid Selection", "different Name");
+        }
+        else if (_musicList.getSelectionModel().getSelectedItem()==null){
+            makeAlert("Error", "Nothing Chosen", "Please choose an option for your background music");
         }
         else {
             ProgressBar _progressCreation = new ProgressBar();
             _vbox.getChildren().add(_progressCreation);
             _progressCreation.setOpacity(100);
-            task.makeCreationTask task = new task.makeCreationTask(_searchTerm.getText(), _imageNumber.getText(), _confirmedAudio, _creationName.getText());
+            task.makeCreationTask task = new task.makeCreationTask(_searchTerm.getText(), _numberList.getSelectionModel().getSelectedIndex(), _confirmedAudio, _creationName.getText(), _musicList.getSelectionModel().getSelectedItem().toString());
             team.submit(task);
             _createCreationButton.setDisable(true);
             task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
@@ -351,13 +364,16 @@ public class CreateCreationController {
         return false;
     }
 
-    @FXML private void goBackMain1(ActionEvent actionEvent) throws IOException {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(Main.class.getResource("/scene/MainMenu.fxml"));
-        Parent layout = loader.load();
+    @FXML private void goBackMain2(ActionEvent actionEvent) throws IOException {
+        makeConfirmation("Confirmation", "Going Back to Main Menu", "All progress will be lost\nDo you still want to go back?");
+        if (result.get() == ButtonType.OK) {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(Main.class.getResource("/scene/MainMenu.fxml"));
+            Parent layout = loader.load();
 
-        Scene scene = new Scene(layout);
-        Stage Stage = (Stage) _cancelCreationButton.getScene().getWindow();
-        Stage.setScene(scene);
+            Scene scene = new Scene(layout);
+            Stage Stage = (Stage) _cancelCreationButton.getScene().getWindow();
+            Stage.setScene(scene);
+        }
     }
 }
