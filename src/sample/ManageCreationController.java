@@ -59,12 +59,13 @@ public class ManageCreationController {
     @FXML public void deleteCreationOnClick(ActionEvent actionEvent) {
 
         if (validSelection()) {
+
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirmation");
             alert.setHeaderText("You have chosen " + _creationChosen);
             alert.setContentText("Are you sure you want to delete " + _creationChosen);
             Optional<ButtonType> result = alert.showAndWait();
-            String cmd = "rm -rf ./Files/creations/" + _creationChosen + " ./Files/keywords/" + _creationChosen;
+            String cmd = "rm -rf ./Files/creations/" + _creationChosen + "; rm -rf ./Files/keywords/" + _creationChosen;
             if (result.get() == ButtonType.OK) {
                 {
                     try {
@@ -92,6 +93,11 @@ public class ManageCreationController {
         if (validSelection()){
             File file = new File("./Files/creations/" + _creationChosen);
             Media vid = new Media(file.toURI().toString());
+
+            if(player!=null){
+                player.stop();
+                player.dispose();
+            }
             player = new MediaPlayer(vid);
 
             player.setAutoPlay(true);
@@ -99,32 +105,35 @@ public class ManageCreationController {
             player.setOnReady(() -> {
             });
             player.setOnEndOfMedia(() -> {
+                player.dispose();
+                _mediaView.setMediaPlayer(null);
+                player=null;
             });
         }
     }
 
     @FXML public void playMediaOnClick(ActionEvent actionEvent) {
-        if(validSelection()) {
+        if(validSelection() && mediaExist()) {
             player.play();
         }
     }
     @FXML public void pauseMediaOnClick(ActionEvent actionEvent) {
-        if (validSelection()) {
+        if (validSelection() && mediaExist()) {
             player.pause();
         }
     }
     @FXML public void fastPlayMediaOnClick(ActionEvent actionEvent) {
-        if (validSelection()) {
-            player.setRate(player.getCurrentRate() * 2);
+        if (validSelection() && mediaExist()) {
+            player.setRate(1.2);
         }
     }
     @FXML public void slowPlayMediaOnClick(ActionEvent actionEvent) {
-        if (validSelection()) {
-            player.setRate(player.getCurrentRate() / 2);
+        if (validSelection() && mediaExist()) {
+            player.setRate(0.8);
         }
     }
     @FXML public void restartMediaOnClick(ActionEvent actionEvent) {
-        if(validSelection()) {
+        if(validSelection() && mediaExist()) {
             player.setRate(1);
             player.seek(player.getStartTime());
             player.play();
@@ -136,6 +145,11 @@ public class ManageCreationController {
     }
 
     @FXML public void goBackMain1(ActionEvent actionEvent) throws IOException {
+        if(player!=null){
+            player.stop();
+            player.dispose();
+        }
+
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(Main.class.getResource("/scene/MainMenu.fxml"));
         Parent layout = loader.load();
@@ -155,5 +169,12 @@ public class ManageCreationController {
             return false;
         }
         return true;
+    }
+
+    private boolean mediaExist(){
+        if(player!=null){
+            return true;
+        }
+        return false;
     }
 }
