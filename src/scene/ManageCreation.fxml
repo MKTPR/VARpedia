@@ -87,7 +87,7 @@
                         <Slider fx:id="_mediaSlider" blockIncrement="0.0" majorTickUnit="6000.0" max="1.0" minorTickCount="60" />
                         <HBox alignment="CENTER" prefHeight="26.0" prefWidth="527.0" spacing="30.0">
                            <children>
-                              <Button fx:id="_fastPlayButton" mnemonicParsing="false" onAction="#fastPlayMediaOnClick" prefHeight="26.0" prefWidth="91.0" text="0.5 X">
+                              <Button fx:id="_fastPlayButton" mnemonicParsing="false" onAction="#fastPlayMediaOnClick" prefHeight="26.0" prefWidth="91.0" text="2 X">
                                  <font>
                                     <Font name="Lato Black" size="13.0" />
                                  </font>
@@ -108,7 +108,7 @@
                                     <Polygon fill="#fefeff" points="-15.717644691467285, 40.437530517578125, 5.8741455078125, 40.7183837890625, -3.8195486068725586, 22.616479873657227" rotate="90.0" stroke="BLACK" strokeType="INSIDE" />
                                  </graphic>
                               </Button>
-                              <Button fx:id="_slowPlayButton" mnemonicParsing="false" onAction="#slowPlayMediaOnClick" prefHeight="26.0" prefWidth="91.0" text="2 X">
+                              <Button fx:id="_slowPlayButton" mnemonicParsing="false" onAction="#slowPlayMediaOnClick" prefHeight="26.0" prefWidth="91.0" text="0.5 X">
                                  <font>
                                     <Font name="Lato Black" size="13.0" />
                                  </font>

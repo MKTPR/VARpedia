@@ -13,7 +13,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -26,7 +25,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Optional;
 
 public class ManageCreationController {
@@ -47,31 +45,43 @@ public class ManageCreationController {
     private String _creationChosen=null;
     private MediaPlayer player;
 
+    /**
+     * Plays the selected creation from the list. It makes a new MediaPlayer
+     * object to set to the existing mediaView.
+     */
+    @FXML public void playCreationOnClick(ActionEvent actionEvent) {
+        refresh();
+        if (validSelection()){
+            File file = new File("./Files/creations/" + _creationChosen+".mp4");
+            Media vid = new Media(file.toURI().toString());
 
-    private void refresh(){
-        _directory = new File("./Files/creations");
-        _items = FXCollections.observableArrayList(getArrayList(_directory));
-        _creationList.setItems(_items);
-    }
-
-    private ArrayList<String> getArrayList(final File directory) {
-        ArrayList<String> list = new ArrayList<String>();
-        String cmd = "ls " + directory + " | grep mp4 | sort | cut -d'.' -f1";
-
-
-        try {
-            Process process = new ProcessBuilder("bash", "-c", cmd).start();
-            BufferedReader stdout = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String line;
-            while ((line = stdout.readLine()) != null) {
-                    list.add(line);
+            if(player!=null){
+                player.stop();
+                player.dispose();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+            player = new MediaPlayer(vid);
+            _mediaView.setMediaPlayer(player);
+
+            player.setAutoPlay(true);
+            player.setOnReady(() -> {
+                sliderSetUp();
+                _volumeSlider.setDisable(false);
+                _mediaSlider.setDisable(false);
+            });
+            player.setOnEndOfMedia(() -> {
+                player.dispose();
+                _mediaView.setMediaPlayer(null);
+                player=null;
+                _volumeSlider.setDisable(true);
+                _mediaSlider.setDisable(true);
+            });
         }
-        return list;
     }
 
+    /**
+     * Deletes the selected creation from the list. The creation itself, and the
+     * audio and video files related to it is deleted for storage purposes.
+     */
     @FXML public void deleteCreationOnClick(ActionEvent actionEvent) {
 
         if (validSelection()) {
@@ -111,40 +121,14 @@ public class ManageCreationController {
         }
     }
 
-    @FXML public void playCreationOnClick(ActionEvent actionEvent) {
-        refresh();
-
-        if (validSelection()){
-            File file = new File("./Files/creations/" + _creationChosen+".mp4");
-            Media vid = new Media(file.toURI().toString());
-
-            if(player!=null){
-                player.stop();
-                player.dispose();
-            }
-
-            player = new MediaPlayer(vid);
-
-            _mediaView.setMediaPlayer(player);
-
-            player.setAutoPlay(true);
-
-
-            player.setOnReady(() -> {
-                sliderSetUp();
-                _mediaSlider.setOpacity(1.0);
-            });
-            player.setOnEndOfMedia(() -> {
-                player.dispose();
-                _mediaView.setMediaPlayer(null);
-                player=null;
-                _mediaSlider.setOpacity(0.0);
-            });
-        }
-    }
-
+    /**
+     * Sets up the slider which displays the point where the media is at.
+     * It syncs the slider with the video and also handles mouse clicks to
+     * move the point which the media is at.
+     */
     private void sliderSetUp() {
 
+        //Set up the volume slider.
         _volumeSlider.setValue(player.getVolume() * 100);
         _volumeSlider.valueProperty().addListener(new InvalidationListener() {
             @Override
@@ -153,6 +137,7 @@ public class ManageCreationController {
             }
         });
 
+        //Set up the Media Slider
         player.currentTimeProperty().addListener(new ChangeListener<Duration>() {
             @Override
             public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
@@ -160,14 +145,13 @@ public class ManageCreationController {
 
             }
         });
+        //Allows user to jump between various points of the video.
         _mediaSlider.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 player.seek(Duration.millis(_mediaSlider.getValue()));
             }
         });
-
-
 
         _mediaSlider.setMax(player.getTotalDuration().toMillis());
         _mediaSlider.setValue(0);
@@ -193,18 +177,13 @@ public class ManageCreationController {
             player.setRate(0.8);
         }
     }
-    @FXML public void restartMediaOnClick(ActionEvent actionEvent) {
-        if(validSelection() && mediaExist()) {
-            player.setRate(1);
-            player.seek(player.getStartTime());
-            player.play();
-        }
-    }
 
+    //handles the creation selection from the user
     @FXML public void handleCreationSelected(MouseEvent mouseEvent) {
         _creationChosen= (String) _creationList.getSelectionModel().getSelectedItem();
     }
 
+    //Loads the main menu and stops all media processes.
     @FXML public void goBackMain1(ActionEvent actionEvent) throws IOException {
         if(player!=null){
             player.stop();
@@ -220,6 +199,31 @@ public class ManageCreationController {
         Stage.setScene(scene);
     }
 
+    //Refreshes the creation listview.
+    private void refresh(){
+        _directory = new File("./Files/creations");
+        _items = FXCollections.observableArrayList(getArrayList(_directory));
+        _creationList.setItems(_items);
+    }
+
+    //Returns the existing creation names in an arrayList.
+    private ArrayList<String> getArrayList(final File directory) {
+        ArrayList<String> list = new ArrayList<String>();
+        String cmd = "ls " + directory + " | grep mp4 | sort | cut -d'.' -f1";
+        try {
+            Process process = new ProcessBuilder("bash", "-c", cmd).start();
+            BufferedReader stdout = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+            while ((line = stdout.readLine()) != null) {
+                list.add(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    //Checks if any selection has been made.
     private boolean validSelection(){
         if (_creationChosen==null){
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -232,6 +236,7 @@ public class ManageCreationController {
         return true;
     }
 
+    //Checks if media currently has a video loaded onto it.
     private boolean mediaExist() {
         if (player != null) {
             return true;

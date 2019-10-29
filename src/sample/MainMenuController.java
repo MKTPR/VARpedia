@@ -11,6 +11,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * This class controls the main menu GUI
+ */
 public class MainMenuController {
 
     public MainMenuController MainMenuController() {
@@ -21,6 +24,7 @@ public class MainMenuController {
     @FXML private Button _createCreationButton;
     @FXML private Button _manageCreationButton;
 
+    //change scene to creating new creations menu
     public void createCreationOnClick() throws IOException{
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(Main.class.getResource("/scene/CreateCreation.fxml"));
@@ -31,6 +35,7 @@ public class MainMenuController {
         Stage.setScene(scene);
     }
 
+    //change scene to managing creations menu
     @FXML public void manageCreationOnClick() throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(Main.class.getResource("/scene/ManageCreation.fxml"));

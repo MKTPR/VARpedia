@@ -117,15 +117,17 @@ public class CreateCreationController {
         else {
             String previewCmd = getVoice("Preview");
 
+            _previewButton.setDisable(true);
             //preview the selected part
-            ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c", previewCmd);
-            try {
-                pb.start();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            task.previewTask task = new task.previewTask(previewCmd);
+            team.submit(task);
+            task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                @Override
+                public void handle(WorkerStateEvent workerStateEvent) {
+                    _previewButton.setDisable(false);
+                }
+            });
         }
-        selected=null;
     }
 
     /**
@@ -256,14 +258,15 @@ public class CreateCreationController {
         task.audioPlayTask task = new task.audioPlayTask(_audioChosen);
         team.submit(task);
         _listenAudioButton.setDisable(true);
+        _deleteAudioButton.setDisable(true);
         task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
             @Override
             public void handle(WorkerStateEvent workerStateEvent) {
                 if (_audioChosen==null){
                     makeAlert("Error", "Invalid Selection", "Please select an AudioFile");
                 }
-                _audioChosen=null;
                 _listenAudioButton.setDisable(false);
+                _deleteAudioButton.setDisable(false);
             }
         });
     }
@@ -278,7 +281,7 @@ public class CreateCreationController {
             makeAlert("Error", "Invalid Selection", "Please fill in all the required parts");
         }
         else if(creationExists(_creationName.getText())){
-            makeAlert("Error", "Invalid Selection", "different Name");
+            makeAlert("Error", "Existing Name", "Please Choose a Different Name \nOr go to the Manage Creations Menu and Delete");
         }
         else if (_musicList.getSelectionModel().getSelectedItem()==null){
             makeAlert("Error", "Nothing Chosen", "Please choose an option for your background music");
@@ -298,18 +301,18 @@ public class CreateCreationController {
                 @Override
                 public void handle(WorkerStateEvent workerStateEvent) {
                     if (task.get_exitStatus() != 0) {
-                        makeAlert("Error", "Unsuccessful", "Sorry");
+                        makeAlert("Error", "Unsuccessful", "Sorry, Please Cancel and Try again");
                         return;
                     }
                     //If succeeded, call the makeCreationTask to finally make the slideshow of images and combine it with the audio created above.
-                    task.makeCreationTask task2 = new task.makeCreationTask(_searchTermChosen, _numberList.getSelectionModel().getSelectedIndex()+1, _creationName.getText());
+                    task.makeCreationTask task2 = new task.makeCreationTask(_searchTermChosen, _numberList.getSelectionModel().getSelectedIndex()+1, _creationName.getText(), _musicList.getSelectionModel().getSelectedItem().toString());
                     team2.submit(task2);
 
                     task2.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
                         @Override
                         public void handle(WorkerStateEvent workerStateEvent) {
                             if (task2.get_exitStatus() != 0) {
-                                makeAlert("Error", "Unsuccessful", "Sorry");
+                                makeAlert("Error", "Unsuccessful", "Sorry, Please Cancel and Try again");
                                 return;
                             }
                             _progressCreation.setOpacity(0);
@@ -374,7 +377,7 @@ public class CreateCreationController {
      * Loads the main menu in a new scene.
      */
     @FXML private void goBackMain2(ActionEvent actionEvent) throws IOException {
-        makeConfirmation("Confirmation", "Going Back to Main Menu", "All progress will be lost\nDo you still want to go back?");
+        makeConfirmation("Confirmation", "Going Back to Main Menu", "All unsaved progress will be lost\nDo you still want to go back?");
         if (result.get() == ButtonType.OK) {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(Main.class.getResource("/scene/MainMenu.fxml"));
