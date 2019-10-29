@@ -17,20 +17,17 @@ public class makeCreationTask extends Task<Void> {
     private String _searchword;
     private ObservableList<String> _audioChosen;
     private String _creationName;
-    private String _music;
     private String directory;
 
     private int _exitStatus;
     private int _number;
     private String audio=null;
-    private Double value=0.0;
 
-    public makeCreationTask(String searchWord, int number, ObservableList<String> audio, String creationName, String music) {
+
+    public makeCreationTask(String searchWord, int number, String creationName) {
         _searchword=searchWord;
         _number= number;
-        _music=music;
         _creationName=creationName;
-        _audioChosen=audio;
         directory= "./Files/keywords/"+_creationName;
     }
 
@@ -38,54 +35,14 @@ public class makeCreationTask extends Task<Void> {
     protected Void call() throws Exception {
         this.flickrSearch();
         this.makeCreation();
-        this.mergeAudios();
-        this.addMusic();
         this.mergeAV();
         return null;
-    }
-
-    private void mergeAudios() {
-
-        String combine = "sox ";
-        for (int i=0; i<_audioChosen.size();i++){
-            combine = combine + "./Files/temp/"+ _audioChosen.get(i) + " ";
-        }
-        combine= combine + "./Files/temp/finaloutput2.wav";
-
-        try {
-            Process combineAudioProcess = new ProcessBuilder("bash", "-c", combine).start();
-            combineAudioProcess.waitFor();
-        } catch (InterruptedException | IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    private void addMusic() {
-        String chosen= null;
-
-        if (_music!=null){
-            if (_music == "Hiphop-beats") {
-                chosen = "grapes_-_I_dunno.mp3";
-            } else if (_music == "Jazzy Funk") {
-                chosen = "Whitewolf225_-_Toronto_Is_My_Beat.mp3";
-            }
-
-            try {
-                String addMusic = "ffmpeg -y -i ./Music/" + chosen + " -i ./Files/temp/finaloutput2.wav -filter_complex \"[0:0]volume=0.4[a];[1:0]volume=1.5[b];[a][b]amix=inputs=2:duration=shortest\" -c:a libmp3lame ./Files/temp/finaloutput.wav";
-                Process process = new ProcessBuilder("bash", "-c", addMusic).start();
-                process.waitFor();
-            } catch (InterruptedException | IOException e) {
-                e.printStackTrace();
-            }
-        }
-
     }
 
     private void mergeAV() {
 
         try {
-            String cmd = "ffmpeg -y -i "+directory+ "/Video/" + _creationName + ".mp4 -i ./Files/temp/finaloutput.wav -r 25 ./Files/creations/" + _creationName + ".mp4; rm ./Files/temp/finaloutput.wav; rm ./Files/temp/finaloutput2.wav ";
+            String cmd = "ffmpeg -y -i "+directory+ "/Video/" + _creationName + ".mp4 -i ./Files/temp/finaloutput.wav -r 25 ./Files/creations/" + _creationName + ".mp4; rm ./Files/temp/finaloutput.wav ./Files/temp/finaloutput2.wav";
             Process process = new ProcessBuilder("bash", "-c", cmd).start();
             process.waitFor();
         } catch (InterruptedException | IOException e) {
@@ -96,17 +53,13 @@ public class makeCreationTask extends Task<Void> {
     private double getDuration(){
 
         try {
-            for (int i=0;i<_audioChosen.size();i++) {
-                String cmd = "soxi -D ./Files/temp/" + _audioChosen.get(i);
+                String cmd = "soxi -D ./Files/temp/finaloutput2.wav";
                 Process process = new ProcessBuilder("bash", "-c", cmd).start();
                 BufferedReader stdout = new BufferedReader(new InputStreamReader(process.getInputStream()));
                 _exitStatus = process.waitFor();
                 audio = stdout.readLine();
-                value = value + Double.parseDouble(audio);
                 stdout.close();
-            }
-
-            return value;
+            return Double.parseDouble(audio);
         } catch (InterruptedException | IOException e) {
             e.printStackTrace();
         }
@@ -132,7 +85,6 @@ public class makeCreationTask extends Task<Void> {
             if (i==_number-1) {
                 writer.println("file ./keywords/"+_creationName+"/Video/image"+i+".jpg");
                 writer.println("duration "+duration);
-                writer.println("file ./keywords/"+_creationName+"/Video/image"+i+".jpg");
                 break;
             }
             writer.println("file ./keywords/"+_creationName+"/Video/image"+i+".jpg");

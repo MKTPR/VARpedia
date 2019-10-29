@@ -21,8 +21,10 @@ import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Optional;
@@ -54,15 +56,21 @@ public class ManageCreationController {
 
     private ArrayList<String> getArrayList(final File directory) {
         ArrayList<String> list = new ArrayList<String>();
+        String cmd = "ls " + directory + " | grep mp4 | sort | cut -d'.' -f1";
 
-        for (final File creations : directory.listFiles()) {
-            list.add(creations.getName());
+
+        try {
+            Process process = new ProcessBuilder("bash", "-c", cmd).start();
+            BufferedReader stdout = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+            while ((line = stdout.readLine()) != null) {
+                    list.add(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        Collections.sort(list, String.CASE_INSENSITIVE_ORDER);
         return list;
     }
-
-
 
     @FXML public void deleteCreationOnClick(ActionEvent actionEvent) {
 
@@ -80,7 +88,7 @@ public class ManageCreationController {
                 alert.setHeaderText("You have chosen " + _creationChosen);
                 alert.setContentText("Are you sure you want to delete " + _creationChosen);
                 Optional<ButtonType> result = alert.showAndWait();
-                String cmd = "rm -rf ./Files/creations/" + _creationChosen + "; rm -rf ./Files/keywords/" + _creationChosen;
+                String cmd = "rm -rf ./Files/creations/" + _creationChosen + ".mp4 ./Files/keywords/" + _creationChosen;
                 if (result.get() == ButtonType.OK) {
                     {
                         try {
@@ -107,7 +115,7 @@ public class ManageCreationController {
         refresh();
 
         if (validSelection()){
-            File file = new File("./Files/creations/" + _creationChosen);
+            File file = new File("./Files/creations/" + _creationChosen+".mp4");
             Media vid = new Media(file.toURI().toString());
 
             if(player!=null){
